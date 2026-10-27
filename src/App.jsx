@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Clock3, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Package, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
+const BASE = '/WebDrons'
+
+const url = (path = '/') =>
+  path === '/' ? `${BASE}/` : `${BASE}/#${path}`
+
 const products = [
   { number: '01', title: 'Responsabilidad civil', text: 'Vuela con la tranquilidad de saber que estás cubierto ante daños a terceros.', tag: 'Cobertura personalizable' },
   { number: '02', title: 'Daños al dron', text: 'Protección frente a golpes, caídas y accidentes durante tus vuelos.', tag: 'A tu medida' },
@@ -87,7 +92,6 @@ const faqAnswers = {
 }
 
 function App() {
-  function App() {
   const [activeFaq, setActiveFaq] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
@@ -118,21 +122,14 @@ function App() {
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
-    const updateHash = () => setCurrentHash(window.location.hash)
-    window.addEventListener('hashchange', updateHash)
-    const transitionNavigation = (event) => {
-      const link = event.target.closest('a[href]')
-      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return
-      const destination = new URL(link.href, window.location.href)
-      if (destination.origin !== window.location.origin || destination.pathname === window.location.pathname) return
-      event.preventDefault()
-      document.documentElement.classList.add('is-leaving')
-      window.setTimeout(() => window.location.assign(destination.href), 280)
+    const updateHash = () => {
+      setCurrentHash(window.location.hash)
     }
-    document.addEventListener('click', transitionNavigation)
+
+    window.addEventListener('hashchange', updateHash)
+
     return () => {
       window.removeEventListener('hashchange', updateHash)
-      document.removeEventListener('click', transitionNavigation)
     }
   }, [])
 
@@ -279,9 +276,9 @@ function AboutPage() {
         <div className="about-page-hero-copy">
           <h1>Seguros para drones,<br /><span>con atención cercana.</span></h1>
           <p>Somos agentes de Coverdrone en Terrassa. Desde Verdaguer Assegurances te orientamos sobre las opciones para proteger tus vuelos recreativos o profesionales.</p>
-          <a className="button-primary" href={url('/productos')}">Conoce nuestros productos <ArrowRight size={17} /></a>
+          <a className="button-primary" href={url('/productos')}>Conoce nuestros productos <ArrowRight size={17} /></a>
         </div>
-        <div className="about-page-visual"><img src="/images/sobre-nosotros-handshake.jpg" alt="Dos profesionales dándose la mano durante una reunión" /></div>
+        <div className="about-page-visual"><img src={`${BASE}/images/sobre-nosotros-handshake.jpg`} alt="Dos profesionales dándose la mano durante una reunión" /></div>
       </section>
 
       <section className="about-agency section-wrap">
@@ -356,3 +353,4 @@ function QuotePage() {
 }
 
 export default App
+
