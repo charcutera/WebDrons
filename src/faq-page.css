@@ -1,0 +1,67 @@
+.faq-page-hero{min-height:590px;padding:0 0 0 8%;display:grid;grid-template-columns:.82fr 1.18fr;align-items:stretch;gap:0;background:#e9eee5;overflow:hidden}
+.faq-page-hero-copy{align-self:center}
+.faq-page-hero-copy h1{font-family:Manrope,sans-serif;font-size:clamp(48px,5.2vw,66px);line-height:1.04;letter-spacing:-.06em;font-weight:600;color:#1b2d23;margin:0 0 16px}
+.faq-page-hero-copy h1 span{color:#7e9866}
+.faq-page-hero-copy>p{font-size:16px;line-height:1.8;color:#68736c;max-width:420px;margin:0}
+.faq-help-card{background:#f8faf6;border:1px solid #dfe6db;border-radius:13px;padding:26px 27px;box-shadow:0 10px 30px #1933220b}
+.faq-help-photo{position:relative;align-self:stretch;width:100%;height:100%;min-height:590px;margin:0;padding:0;overflow:hidden;border:0;border-radius:14px 0 0 14px;box-shadow:none}
+.faq-help-photo:after{content:'';position:absolute;inset:45% 0 0;background:linear-gradient(0deg,#17372955,transparent);pointer-events:none}
+.faq-help-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.faq-help-icon{width:48px;height:48px;border-radius:12px;background:#e6eedc;color:#67884f;display:grid;place-items:center;margin-bottom:19px}
+.faq-help-card>span{font-size:10px;font-weight:700;letter-spacing:.12em;color:#71836d}
+.faq-help-card h2{font-family:Manrope,sans-serif;font-size:23px;line-height:1.25;letter-spacing:-.03em;color:#294333;margin:10px 0 8px}
+.faq-help-card p{font-size:13px;line-height:1.7;color:#77827a;margin:0}
+.faq-categories-section{padding-top:70px;padding-bottom:62px}
+.faq-categories-heading{margin-bottom:22px}
+.faq-categories-heading h2{font-family:Manrope,sans-serif;font-size:32px;letter-spacing:-.04em;color:#1b2d23;margin:13px 0 0}
+.faq-category-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.faq-category-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-height:166px;padding:20px;background:#f0f4eb;border:1px solid #dfe7d8;border-radius:11px;color:#263b2d;cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
+.faq-category-card:hover{transform:translateY(-2px);border-color:#b9cba9;box-shadow:0 8px 22px #1933220b}
+.faq-category-active{background:#e1ebd7;border-color:#9eb58a;box-shadow:inset 0 0 0 1px #b7cba8}
+.faq-category-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:10px;background:#dce8d0;color:#58784b;margin-bottom:15px}
+.faq-category-title{font-family:Manrope,sans-serif;font-size:16px;font-weight:700;color:#2c4734}
+.faq-category-text{font-size:12px;line-height:1.6;color:#718076;margin-top:6px}
+.faq-answers-section{padding-top:12px;padding-bottom:80px;display:grid;grid-template-columns:.8fr 1.2fr;gap:8%;align-items:start}
+.faq-answers-heading{display:flex;flex-direction:column;align-items:flex-start;gap:17px}
+.faq-answers-heading h2{font-family:Manrope,sans-serif;font-size:38px;line-height:1.1;letter-spacing:-.05em;font-weight:600;color:#1b2d23;margin:15px 0 0}
+.faq-answers-heading h2 span{color:#1b2d23}
+.faq-count{font-size:10px;font-weight:700;letter-spacing:.1em;color:#71836d;background:#eef2e9;border-radius:20px;padding:8px 11px}
+.faq-page-list{border-top:1px solid #dfe4dc}
+.faq-page-item{border-bottom:1px solid #dfe4dc;padding:0 6px}
+.faq-page-item button{width:100%;display:grid;grid-template-columns:34px 1fr 20px;align-items:center;gap:10px;padding:19px 0;border:0;background:transparent;text-align:left;font-size:15px;font-weight:600;color:#35463a;cursor:pointer}
+.faq-page-number{font-size:10px;letter-spacing:.08em;color:#8da579}
+.faq-page-item button svg{color:#71836d;transition:transform .3s ease}
+.faq-page-item-active button svg{transform:rotate(180deg)}
+.faq-page-item>p{font-size:14px;line-height:1.8;color:#748078;margin:0 30px 20px 44px;animation:faqAnswerIn .28s ease both}
+.faq-contact-cta{background:#203f31;color:#fff;padding:37px 10%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.faq-contact-cta .eyebrow{color:#bdc9b7}
+.faq-contact-cta .eyebrow-line{background:var(--lime)}
+.faq-contact-cta h2{font-family:Manrope,sans-serif;font-size:26px;line-height:1.25;letter-spacing:-.04em;font-weight:600;color:#fff;margin:9px 0 6px}
+.faq-categories-heading h2,.faq-answers-heading h2,.faq-contact-cta h2{margin-top:0}
+.faq-contact-cta p{font-size:13px;line-height:1.6;color:#cfdbd0;margin:0}
+.faq-contact-cta .button-light{white-space:nowrap}
+@media(max-width:900px){.faq-page-hero{padding-left:7%;grid-template-columns:.9fr 1.1fr;gap:0}.faq-help-photo{width:100%;margin:0;min-height:590px}.faq-categories-section,.faq-answers-section{padding-left:7%;padding-right:7%}.faq-contact-cta{padding-left:7%;padding-right:7%}}
+@media(max-width:680px){
+  .faq-page-hero{display:flex;flex-direction:column;align-items:stretch;padding:40px 6%;gap:26px;min-height:0}
+  .faq-page-hero-copy h1{font-size:44px;margin:0 0 12px}
+  .faq-page-hero-copy>p{font-size:14px}
+  .faq-help-card{padding:19px}
+  .faq-help-photo{width:100%;height:270px;min-height:270px;margin-left:0;padding:0;border-radius:14px}
+  .faq-help-icon{width:42px;height:42px;margin-bottom:13px}
+  .faq-help-card h2{font-size:20px}
+  .faq-help-card p{font-size:12px}
+  .faq-categories-section{padding:52px 6% 38px}
+  .faq-categories-heading h2{font-size:27px}
+  .faq-category-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .faq-category-card{min-height:150px;padding:15px}
+  .faq-category-icon{width:34px;height:34px;margin-bottom:12px}
+  .faq-category-title{font-size:14px}
+  .faq-category-text{font-size:11px}
+  .faq-answers-section{display:flex;flex-direction:column;padding:15px 6% 58px;gap:21px}
+  .faq-answers-heading h2{font-size:32px}
+  .faq-page-item button{font-size:13px;grid-template-columns:27px 1fr 18px;padding:16px 0}
+  .faq-page-item>p{font-size:13px;margin:0 20px 17px 36px}
+  .faq-contact-cta{padding:30px 6%;align-items:flex-start;flex-direction:column;gap:17px}
+  .faq-contact-cta h2{font-size:23px}
+  .faq-categories-heading h2,.faq-answers-heading h2{margin-top:0}
+}
