@@ -87,15 +87,34 @@ const faqAnswers = {
 }
 
 function App() {
+  function App() {
   const [activeFaq, setActiveFaq] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
-  const currentPath = window.location.pathname.replace(/\/$/, '') || '/'
+
+  const currentPath = currentHash.startsWith('#/')
+    ? currentHash.slice(1).replace(/\/$/, '')
+    : '/'
+
   const isQuotePage = currentPath === '/presupuesto'
   const isProductsPage = currentPath === '/productos'
   const isFaqPage = currentPath === '/faq'
   const isAboutPage = currentPath === '/sobre-nosotros'
-  const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : currentPath === '/' ? 'home' : ''
+
+  const activeNav = isProductsPage
+    ? 'products'
+    : isAboutPage
+      ? 'about'
+      : isFaqPage
+        ? 'faq'
+        : currentHash === '#nosotros'
+          ? 'about'
+          : currentHash === '#faq'
+            ? 'faq'
+            : currentPath === '/'
+              ? 'home'
+              : ''
+
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
