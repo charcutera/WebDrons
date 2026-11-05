@@ -383,7 +383,8 @@ body{font-size:17px}
 .hero-slide-dot:hover{transform:scale(1.2)}
 .hero-slide-dot-active{background:#fff;transform:scale(1.2)}
 .hero-slide-dot:focus-visible{outline:2px solid #fff;outline-offset:3px}
-.hero-partner{margin-top:16px}
+.hero-partner{margin-top:28px;padding:0;background:transparent;border:0;border-radius:0}
+.hero-partner img{width:145px}
 @media(min-width:681px){.hero{height:590px;min-height:590px}.hero-visual{height:100%;min-height:0}}
 @media(min-width:681px) and (max-width:900px){.hero{height:540px;min-height:540px}}
 @media(max-width:680px){.hero{height:auto;min-height:0}.hero-visual{height:335px;min-height:335px}.hero-slide-dots{bottom:16px}}
