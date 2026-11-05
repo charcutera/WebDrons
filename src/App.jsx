@@ -1,15 +1,10 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Clock3, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Package, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
-const BASE = '/WebDrons'
-
-const url = (path = '/') =>
-  path === '/' ? `${BASE}/` : `${BASE}/#${path}`
-
 const products = [
-  { number: '01', title: 'Responsabilidad civil', text: 'Vuela con la tranquilidad de saber que estás cubierto ante daños a terceros.', tag: 'Cobertura personalizable' },
-  { number: '02', title: 'Daños al dron', text: 'Protección frente a golpes, caídas y accidentes durante tus vuelos.', tag: 'A tu medida' },
-  { number: '03', title: 'Robo y pérdida', text: 'Tu equipo también está protegido cuando no está en el aire.', tag: 'Cobertura opcional' },
+  { number: '01', title: 'Responsabilidad civil', text: 'Opciones para proteger tu empresa ante reclamaciones por daños a terceros durante una operación.', tag: 'Cobertura para actividad profesional' },
+  { number: '02', title: 'Drones y equipos', text: 'Protege los equipos que utilizas en tus servicios, incluidos accesorios y material asegurado.', tag: 'Equipos propios o alquilados' },
+  { number: '03', title: 'Actividad profesional', text: 'Valora opciones de cobertura según tus servicios, proyectos y forma de operar.', tag: 'Soluciones para empresas' },
 ]
 
 const faqs = [
@@ -47,6 +42,25 @@ const clientSupport = [
   { title: 'Documentación rápida', text: 'Al contratar, recibes la documentación de tu póliza sin esperar al siguiente día hábil.', icon: FileText },
   { title: 'Apoyo en siniestros', text: 'Coverdrone resolvió el 96% de los siniestros comerciales de drones en 2025. El equipo puede orientarte si lo necesitas.', icon: LifeBuoy },
   { title: 'Tu póliza, bajo control', text: 'Gestiona tu póliza en línea y contacta con el equipo cuando necesites ayuda.', icon: Settings },
+]
+
+const heroSlides = [
+  {
+    src: `${import.meta.env.BASE_URL}images/espectaculo-drones-portada.jpg`,
+    alt: 'Espectáculo de drones de luz en el cielo nocturno',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/drone-espectaculo-ciudad.jpg`,
+    alt: 'Espectáculo nocturno de drones luminosos sobre edificios',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1505717927613-21e196737419?auto=format&fit=crop&fm=jpg&q=85&w=1800',
+    alt: 'Dron gris claramente visible entre los árboles de un bosque',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1547044283-81919b74c110?auto=format&fit=crop&fm=jpg&q=85&w=1800',
+    alt: 'Profesional pilotando un dron y controlando su cámara',
+  },
 ]
 
 const faqCategories = [
@@ -93,129 +107,93 @@ const faqAnswers = {
 
 function App() {
   const [activeFaq, setActiveFaq] = useState(0)
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
-
-  const currentPath = currentHash.startsWith('#/')
-    ? currentHash.slice(1).replace(/\/$/, '')
-    : '/'
-
+  const currentPath = window.location.pathname.replace(/\/$/, '') || '/'
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+  const isHomePage = currentPath === '/' || currentPath === basePath
   const isQuotePage = currentPath === '/presupuesto'
   const isProductsPage = currentPath === '/productos'
   const isFaqPage = currentPath === '/faq'
   const isAboutPage = currentPath === '/sobre-nosotros'
-
-  const activeNav = isProductsPage
-    ? 'products'
-    : isAboutPage
-      ? 'about'
-      : isFaqPage
-        ? 'faq'
-        : currentHash === '#nosotros'
-          ? 'about'
-          : currentHash === '#faq'
-            ? 'faq'
-            : currentPath === '/'
-              ? 'home'
-              : ''
-
+  const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : currentPath === '/' ? 'home' : ''
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
-    const updateHash = () => {
-      setCurrentHash(window.location.hash)
-    }
+    if (!isHomePage) return undefined
+    heroSlides.forEach(({ src }) => {
+      const image = new Image()
+      image.src = src
+    })
+  }, [isHomePage])
 
+  useEffect(() => {
+    if (!isHomePage) return undefined
+    const interval = window.setInterval(() => {
+      setActiveHeroSlide((current) => (current + 1) % heroSlides.length)
+    }, 3000)
+    return () => window.clearInterval(interval)
+  }, [isHomePage])
+
+  useEffect(() => {
+    const updateHash = () => setCurrentHash(window.location.hash)
     window.addEventListener('hashchange', updateHash)
-
+    const transitionNavigation = (event) => {
+      const link = event.target.closest('a[href]')
+      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return
+      const destination = new URL(link.href, window.location.href)
+      if (destination.origin !== window.location.origin || destination.pathname === window.location.pathname) return
+      event.preventDefault()
+      document.documentElement.classList.add('is-leaving')
+      window.setTimeout(() => window.location.assign(destination.href), 280)
+    }
+    document.addEventListener('click', transitionNavigation)
     return () => {
       window.removeEventListener('hashchange', updateHash)
+      document.removeEventListener('click', transitionNavigation)
     }
   }, [])
 
   return (
     <>
-<header className="site-header">
-  <a
-    className="brand"
-    href={url('/')}
-    aria-label="SegurosDron, inicio"
-  >
-    <span>
-      SEGUROS<span className="brand-light">DRON</span>
-    </span>
-  </a>
-
-  <button
-    className="menu-toggle"
-    onClick={() => setMenuOpen(!menuOpen)}
-    aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-  >
-    {menuOpen ? <X /> : <Menu />}
-  </button>
-
-  <nav className={menuOpen ? 'nav-links nav-open' : 'nav-links'}>
-    <a
-      className={activeNav === 'home' ? 'nav-active' : ''}
-      href={url('/')}
-      onClick={closeMenu}
-    >
-      Inicio
-    </a>
-
-    <a
-      className={activeNav === 'products' ? 'nav-active' : ''}
-      href={url('/productos')}
-      onClick={closeMenu}
-    >
-      Nuestros productos
-    </a>
-
-    <a
-      className={activeNav === 'about' ? 'nav-active' : ''}
-      href={url('/sobre-nosotros')}
-      onClick={closeMenu}
-    >
-      Sobre nosotros
-    </a>
-
-    <a
-      className={activeNav === 'faq' ? 'nav-active' : ''}
-      href={url('/faq')}
-      onClick={closeMenu}
-    >
-      FAQ
-    </a>
-  </nav>
-
-  <span className="header-cta inert-link" aria-disabled="true">
-    Solicitar presupuesto <ArrowUpRight size={16} />
-  </span>
-</header>
+      <header className="site-header">
+        <a className="brand" href="/" aria-label="SegurosDron, inicio"><span>SEGUROS<span className="brand-light">DRON</span></span></a>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X /> : <Menu />}</button>
+        <nav className={menuOpen ? 'nav-links nav-open' : 'nav-links'}>
+          <a className={activeNav === 'home' ? 'nav-active' : ''} href="/" onClick={closeMenu} aria-current={activeNav === 'home' ? 'page' : undefined}>Inicio</a><a className={activeNav === 'products' ? 'nav-active' : ''} href="/productos" onClick={closeMenu} aria-current={activeNav === 'products' ? 'page' : undefined}>Nuestros productos</a><a className={activeNav === 'about' ? 'nav-active' : ''} href="/sobre-nosotros" onClick={closeMenu} aria-current={activeNav === 'about' ? 'page' : undefined}>Sobre nosotros</a><a className={activeNav === 'faq' ? 'nav-active' : ''} href="/faq" onClick={closeMenu} aria-current={activeNav === 'faq' ? 'page' : undefined}>FAQ</a>
+        </nav>
+        <span className="header-cta inert-link" aria-disabled="true">Cotizar precio <ArrowUpRight size={16} /></span>
+      </header>
 
       {isQuotePage ? <QuotePage /> : isProductsPage ? <ProductsPage /> : isAboutPage ? <AboutPage /> : isFaqPage ? <FaqPage /> : <main>
         <section className="hero" id="inicio">
           <div className="hero-copy">
-            <h1>Hecho para<br />volar <span>tranquilo.</span></h1>
-            <p className="hero-subtitle">El seguro que entiende tu forma de volar. Protege tu dron, tu trabajo y cada nueva aventura.</p>
-            <div className="hero-actions"><span className="button-primary inert-link" aria-disabled="true">Encuentra tu cobertura <ArrowRight size={17} /></span></div>
+            <h1>Tu operación,<br /><span>bien protegida.</span></h1>
+            <p className="hero-subtitle">Seguros especializados para empresas que trabajan con drones: responsabilidad civil, equipos y operaciones profesionales.</p>
+            <div className="hero-actions"><span className="button-primary inert-link" aria-disabled="true">Cotizar precio <ArrowRight size={17} /></span></div>
           </div>
           <div className="hero-visual">
-            <img src="https://images.unsplash.com/photo-1506947411487-a56738267384?auto=format&fit=crop&w=1500&q=85" alt="Dron volando sobre un paisaje de montaña" />
+            <div className="hero-slide-track" style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}>
+              {heroSlides.map((slide, index) => <img key={slide.src} src={slide.src} alt={slide.alt} aria-hidden={activeHeroSlide !== index} />)}
+            </div>
             <div className="image-shade" />
-            <div className="floating-card"><div className="floating-icon"><ShieldCheck size={20} /></div><div><strong>Siempre a tu lado</strong><span>Protección para cada vuelo</span></div></div>
+            <div className="floating-card"><div className="floating-icon"><ShieldCheck size={20} /></div><div><strong>Especialistas en drones</strong><span>Apoyo para operaciones profesionales</span></div></div>
+            <div className="hero-slide-dots" role="group" aria-label="Seleccionar imagen del banner">
+              {heroSlides.map((slide, index) => <button key={slide.src} type="button" className={activeHeroSlide === index ? 'hero-slide-dot hero-slide-dot-active' : 'hero-slide-dot'} onClick={() => setActiveHeroSlide(index)} aria-label={`Mostrar imagen ${index + 1}`} aria-pressed={activeHeroSlide === index} />)}
+            </div>
           </div>
         </section>
 
         <section className="trust-strip"><div className="trust-lead">PARA LOS QUE MIRAN MÁS ALLÁ</div><div className="trust-item"><ShieldCheck size={19} /><span>Protección especializada</span></div><div className="trust-item"><Clock3 size={19} /><span>Un proceso sencillo</span></div><div className="trust-item"><Sparkles size={18} /><span>Coberturas flexibles</span></div></section>
 
         <section className="products section-wrap" id="productos">
-          <div className="section-top"><div><h2>Tu dron. Tu forma<br />de <span>protegerlo.</span></h2></div></div>
+          <div className="section-top"><div><h2>Tu operación aérea.<br /><span>Bien protegida.</span></h2></div></div>
           <div className="product-grid">{products.map((product) => <article className="product-card" key={product.number}><div className="product-card-top"><span>{product.number}</span></div><h3>{product.title}</h3><p>{product.text}</p><div className="product-card-bottom"><span>{product.tag}</span></div></article>)}</div>
-          <div className="products-note"><span><Check size={15} /> Contratación sencilla</span><span><Check size={15} /> Opciones para profesionales y aficionados</span><a href={url('/productos')}>Ver todos los productos <ArrowRight size={15} /></a></div>
+          <div className="products-note"><span><Check size={15} /> Opciones para actividad profesional</span><span><Check size={15} /> Equipos, flotas y responsabilidad</span><a href="/productos">Ver todos los productos <ArrowRight size={15} /></a></div>
         </section>
 
-        <section className="about" id="nosotros"><div className="about-image"><img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1300&q=85" alt="Dron de uso profesional preparado para volar" /></div><div className="about-copy"><h2>Atención cercana,<br />desde <span>Terrassa.</span></h2><p>SegurosDron cuenta con la atención de Verdaguer Assegurances, una oficina de seguros en Terrassa.</p><p>Estamos en c/ Baldrich 69 A. Puedes llamarnos o escribirnos para resolver tus dudas sobre la protección de tu dron.</p><div className="about-stat"><strong>Verdaguer Assegurances</strong><span>Terrassa</span></div></div></section>
+        <section className="about" id="nosotros"><div className="about-image"><img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1300&q=85" alt="Dron profesional preparado para una operación aérea" /></div><div className="about-copy"><h2>Tu actividad,<br /><span>nuestro enfoque.</span></h2><p>Somos broker de Coverdrone y nos especializamos en seguros para empresas y profesionales que trabajan con drones.</p><p>Te ayudamos a revisar opciones de responsabilidad civil, protección de equipos y coberturas relacionadas con tu operación.</p><div className="about-stat"><strong>Broker de Coverdrone</strong><span>Seguros para operaciones profesionales</span></div></div></section>
 
         <section className="faq-section section-wrap" id="faq"><div className="faq-heading"><h2>¿Tienes preguntas?<br /><span>Estamos cerca.</span></h2><p>Lo importante es que vueles con confianza. Aquí respondemos a lo que más nos preguntan.</p><span className="text-link inert-link" aria-disabled="true">¿Tienes otra duda? Escríbenos <ArrowRight size={15} /></span></div><div className="faq-list">{faqs.map((faq, index) => <div className={activeFaq === index ? 'faq-item faq-active' : 'faq-item'} key={faq.q}><button onClick={() => setActiveFaq(activeFaq === index ? -1 : index)} aria-expanded={activeFaq === index}><span className="faq-number">0{index + 1}</span><span>{faq.q}</span><ChevronDown size={18} /></button>{activeFaq === index && <p>{faq.a}</p>}</div>)}</div></section>
 
@@ -223,9 +201,9 @@ function App() {
       </main>}
 
       <footer className="footer">
-        <div className="footer-brand-group"><a className="brand footer-brand" href={url('/')}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Seguro para drones, con atención cercana en Terrassa.</p></div>
-        <div className="footer-contact"><strong>Verdaguer Assegurances <span>· Terrassa</span></strong><div className="footer-contact-details"><span>c/ Baldrich 69 A, 08221 Terrassa</span><span>93 706 99 52</span><span>administracio@verdaguer-assegurances.com</span><span>www.verdaguer-assegurances.com</span><span>De 9h a 14h y 15h a 19h</span></div></div>
-        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={url('/productos')}>Nuestros productos</a><a href={url('/sobre-nosotros')}>Sobre nosotros</a><a href={url('/faq')}>FAQ</a><span className="inert-link" aria-disabled="true">Presupuesto</span></nav>
+        <div className="footer-brand-group"><a className="brand footer-brand" href="/"><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
+        <div className="footer-contact"><strong>Especialistas en seguros para drones</strong><div className="footer-contact-details"><span>Broker de Coverdrone</span><a href="tel:+34611234567">611 234 567</a></div></div>
+        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href="/productos">Nuestros productos</a><a href="/sobre-nosotros">Sobre nosotros</a><a href="/faq">FAQ</a><span className="inert-link" aria-disabled="true">Cotizar precio</span></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
     </>
@@ -238,8 +216,8 @@ function ProductsPage() {
       <section className="products-page-hero">
         <div className="products-page-hero-copy">
           <h1>Más libertad.<br /><span>Mejor protegido.</span></h1>
-          <p>Elige una póliza recreativa o comercial, con periodos desde un día hasta un año. Combina opciones para tu responsabilidad civil y tu equipo, propio o alquilado, según tu actividad.</p>
-          <span className="button-primary inert-link" aria-disabled="true">Solicitar presupuesto <ArrowRight size={17} /></span>
+          <p>Protección para operaciones comerciales con drones. Revisa las opciones de responsabilidad civil, equipo y cobertura profesional según la actividad de tu empresa.</p>
+          <span className="button-primary inert-link" aria-disabled="true">Cotizar precio <ArrowRight size={17} /></span>
         </div>
         <div className="products-page-visual"><img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&w=1400&q=85" alt="Piloto preparando un dron para volar" /></div>
       </section>
@@ -264,7 +242,7 @@ function ProductsPage() {
 
       <section className="client-support-section"><div className="client-support-inner"><div className="client-support-heading"><h2>Cómo te acompañamos.</h2><p>Queremos que entiendas tus opciones y sepas dónde acudir cuando tengas una duda.</p></div><div className="client-support-grid">{clientSupport.map(({ title, text, icon: Icon }) => <article className="client-support-card" key={title}><span className="support-icon"><Icon size={21} /></span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      <section className="products-bottom-cta"><div><h2>Cuéntanos qué necesitas.</h2><p>Preparamos una propuesta pensada para tu dron y tu actividad.</p></div><span className="button-light inert-link" aria-disabled="true">Solicitar presupuesto <ArrowRight size={17} /></span></section>
+      <section className="products-bottom-cta"><div><h2>Cuéntanos sobre tu operación.</h2><p>Preparamos una propuesta según los drones y servicios de tu empresa.</p></div><span className="button-light inert-link" aria-disabled="true">Cotizar precio <ArrowRight size={17} /></span></section>
     </main>
   )
 }
@@ -275,26 +253,26 @@ function AboutPage() {
       <section className="about-page-hero">
         <div className="about-page-hero-copy">
           <h1>Seguros para drones,<br /><span>con atención cercana.</span></h1>
-          <p>Somos agentes de Coverdrone en Terrassa. Desde Verdaguer Assegurances te orientamos sobre las opciones para proteger tus vuelos recreativos o profesionales.</p>
-          <a className="button-primary" href={url('/productos')}>Conoce nuestros productos <ArrowRight size={17} /></a>
+          <p>Somos un broker de Coverdrone especializado en seguros para empresas y profesionales que trabajan con drones. Te orientamos sobre opciones para proteger tus operaciones.</p>
+          <a className="button-primary" href="/productos">Conoce nuestros productos <ArrowRight size={17} /></a>
         </div>
-        <div className="about-page-visual"><img src={`${BASE}/images/sobre-nosotros-handshake.jpg`} alt="Dos profesionales dándose la mano durante una reunión" /></div>
+        <div className="about-page-visual"><img src="/images/sobre-nosotros-handshake.jpg" alt="Dos profesionales dándose la mano durante una reunión" /></div>
       </section>
 
       <section className="about-agency section-wrap">
         <div className="about-agency-copy">
-          <h2>Coverdrone,<br /><span>con apoyo local.</span></h2>
-          <p>Coverdrone aporta su especialización en seguros para drones. Verdaguer Assegurances te atiende desde Terrassa y te ayuda a entender las opciones disponibles antes de solicitar tu presupuesto.</p>
+          <h2>Especialistas en drones,<br /><span>con el respaldo de Coverdrone.</span></h2>
+          <p>Somos un broker de Coverdrone centrado en seguros para drones. Conocemos las necesidades de las empresas y los profesionales que operan flotas, prestan servicios aéreos o realizan trabajos especializados.</p>
         </div>
         <div className="about-agency-points">
-          <article><span>01</span><div><h3>Atención cercana</h3><p>Resolvemos tus dudas con un trato directo desde nuestra oficina en Terrassa.</p></div></article>
-          <article><span>02</span><div><h3>Opciones para tu actividad</h3><p>Te orientamos tanto si vuelas por afición como si utilizas el dron profesionalmente.</p></div></article>
-          <article><span>03</span><div><h3>Información clara</h3><p>Te ayudamos a revisar coberturas, límites y condiciones de la póliza.</p></div></article>
+          <article><span>01</span><div><h3>Enfoque especializado</h3><p>Nos centramos en seguros para drones y en las particularidades de cada operación.</p></div></article>
+          <article><span>02</span><div><h3>Para cada tipo de piloto</h3><p>Te orientamos tanto si vuelas por afición como si utilizas el dron profesionalmente.</p></div></article>
+          <article><span>03</span><div><h3>Claridad en cada opción</h3><p>Te ayudamos a revisar coberturas, límites y condiciones de la póliza.</p></div></article>
         </div>
       </section>
 
       <section className="about-contact-banner">
-        <div><h2>Estamos en Terrassa.</h2><p>c/ Baldrich 69 A · 08221 Terrassa</p><p><a className="about-contact-phone" href="tel:+34937069952">93 706 99 52</a></p><p>De 9h a 14h y 15h a 19h</p></div>
+        <div><h2>Hablemos de tu próximo vuelo.</h2><p>Broker de Coverdrone · Especialistas en seguros para drones</p><p><a className="about-contact-phone" href="tel:+34611234567">611 234 567</a></p></div>
         <span className="button-light inert-link" aria-disabled="true">Habla con nosotros <ArrowRight size={17} /></span>
       </section>
     </main>
@@ -338,7 +316,7 @@ function QuotePage() {
   return (
     <main className="quote-page">
       <div className="quote-page-intro">
-        <a className="quote-back" href={url('/')}><ArrowLeft size={16} /> Inicio</a>
+        <a className="quote-back" href="/"><ArrowLeft size={16} /> Inicio</a>
         <h1>Tu próximo vuelo<br />empieza con un <span>sí.</span></h1>
         <p>Cuéntanos un poco sobre tu dron y lo que necesitas. Te enviaremos una propuesta sin compromiso.</p>
         <div className="quote-promise"><span className="promise-check"><Check size={15} /></span><span>Rápido, sencillo y sin compromiso.</span></div>
@@ -346,11 +324,10 @@ function QuotePage() {
       </div>
       <form className="quote-form" onSubmit={(event) => { event.preventDefault(); setSubmitted(true) }}>
         <div className="form-heading"><span>HABLEMOS DE TU VUELO</span><span>01 — 03</span></div>
-        {submitted ? <div className="success-message"><div className="success-icon"><Check size={22} /></div><h3>¡Gracias por confiar en nosotros!</h3><p>Hemos recibido tu solicitud. Nuestro equipo se pondrá en contacto contigo muy pronto.</p><button type="button" className="text-link" onClick={() => setSubmitted(false)}>Enviar otra solicitud <ArrowRight size={15} /></button></div> : <><label>Tu nombre<input name="name" placeholder="¿Cómo te llamas?" required /></label><label>Correo electrónico<input name="email" type="email" placeholder="tu@email.com" required /></label><label>¿Para qué utilizas tu dron?<select name="use" defaultValue="" required><option value="" disabled>Selecciona una opción</option><option>Uso recreativo</option><option>Uso profesional</option><option>Ambos</option></select></label><label>Cuéntanos un poco más <span className="optional">OPCIONAL</span><textarea name="message" placeholder="Modelo del dron, tipo de cobertura que buscas…" rows="3" /></label><button className="button-primary form-submit" type="submit">Solicitar mi presupuesto <ArrowRight size={17} /></button><div className="form-privacy">Al enviar este formulario aceptas nuestra política de privacidad.</div></>}
+        {submitted ? <div className="success-message"><div className="success-icon"><Check size={22} /></div><h3>¡Gracias por confiar en nosotros!</h3><p>Hemos recibido tu solicitud. Nuestro equipo se pondrá en contacto contigo muy pronto.</p><button type="button" className="text-link" onClick={() => setSubmitted(false)}>Enviar otra solicitud <ArrowRight size={15} /></button></div> : <><label>Tu nombre<input name="name" placeholder="¿Cómo te llamas?" required /></label><label>Correo electrónico<input name="email" type="email" placeholder="tu@email.com" required /></label><label>¿Para qué utilizas tu dron?<select name="use" defaultValue="" required><option value="" disabled>Selecciona una opción</option><option>Uso profesional</option><option>Uso recreativo</option><option>Ambos</option></select></label><label>Cuéntanos un poco más <span className="optional">OPCIONAL</span><textarea name="message" placeholder="Empresa, actividad, modelos de dron, flota y coberturas que buscas…" rows="3" /></label><button className="button-primary form-submit" type="submit">Cotizar precio <ArrowRight size={17} /></button><div className="form-privacy">Al enviar este formulario aceptas nuestra política de privacidad.</div></>}
       </form>
     </main>
   )
 }
 
 export default App
-
