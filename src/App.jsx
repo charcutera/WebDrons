@@ -175,6 +175,7 @@ function App() {
             <h1>Tu operación,<br /><span>bien protegida.</span></h1>
             <p className="hero-subtitle">Seguros especializados para empresas que trabajan con drones: responsabilidad civil, equipos y operaciones profesionales.</p>
             <div className="hero-actions"><span className="button-primary inert-link" aria-disabled="true">Cotizar precio <ArrowRight size={17} /></span></div>
+            <div className="about-partner hero-partner"><span>Broker de</span><img src={appPath('images/cropped-coverdrone_logo.png')} alt="Coverdrone" /></div>
           </div>
           <div className="hero-visual">
             <div className="hero-slide-track" style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}>
@@ -205,7 +206,7 @@ function App() {
 
       <footer className="footer">
         <div className="footer-brand-group"><a className="brand footer-brand" href={appPath()}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
-        <div className="footer-contact"><strong>Especialistas en seguros para drones</strong><div className="footer-contact-details"><span>Broker de Coverdrone</span><a href="tel:+34611234567">611 234 567</a></div></div>
+        <div className="footer-contact"><strong>Especialistas en seguros para drones</strong><div className="footer-contact-details"><a href="tel:+34611234567">611 234 567</a></div></div>
         <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><span className="inert-link" aria-disabled="true">Cotizar precio</span></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
@@ -266,6 +267,7 @@ function AboutPage() {
         <div className="about-agency-copy">
           <h2>Especialistas en drones,<br /><span>con el respaldo de Coverdrone.</span></h2>
           <p>Somos un broker de Coverdrone centrado en seguros para drones. Conocemos las necesidades de las empresas y los profesionales que operan flotas, prestan servicios aéreos o realizan trabajos especializados.</p>
+          <div className="about-partner"><span>Broker de</span><img src={appPath('images/cropped-coverdrone_logo.png')} alt="Coverdrone" /></div>
         </div>
         <div className="about-agency-points">
           <article><span>01</span><div><h3>Enfoque especializado</h3><p>Nos centramos en seguros para drones y en las particularidades de cada operación.</p></div></article>
@@ -275,7 +277,7 @@ function AboutPage() {
       </section>
 
       <section className="about-contact-banner">
-        <div><h2>Hablemos de tu próximo vuelo.</h2><p>Broker de Coverdrone · Especialistas en seguros para drones</p><p><a className="about-contact-phone" href="tel:+34611234567">611 234 567</a></p></div>
+        <div><h2>Hablemos de tu próximo vuelo.</h2><p>Especialistas en seguros para drones</p><p><a className="about-contact-phone" href="tel:+34611234567">611 234 567</a></p></div>
         <span className="button-light inert-link" aria-disabled="true">Habla con nosotros <ArrowRight size={17} /></span>
       </section>
     </main>
