@@ -46,11 +46,11 @@ const clientSupport = [
 
 const heroSlides = [
   {
-    src: `${import.meta.env.BASE_URL}images/espectaculo-drones-portada.jpg`,
+    src: `${import.meta.env.BASE_URL}images/pexels-magda-ehlers-pexels-34182311.jpg`,
     alt: 'Espectáculo de drones de luz en el cielo nocturno',
   },
   {
-    src: `${import.meta.env.BASE_URL}images/drone-espectaculo-ciudad.jpg`,
+    src: `${import.meta.env.BASE_URL}images/pexels-lin-2156561570-35439843.jpg`,
     alt: 'Espectáculo nocturno de drones luminosos sobre edificios',
   },
   {
