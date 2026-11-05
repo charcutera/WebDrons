@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Clock3, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Package, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
+const BASE = '/WebDrons'
+
+const url = (path = '/') =>
+  path === '/' ? `${BASE}/` : `${BASE}/#${path}`
+
 const products = [
   { number: '01', title: 'Responsabilidad civil', text: 'Vuela con la tranquilidad de saber que estás cubierto ante daños a terceros.', tag: 'Cobertura personalizable' },
   { number: '02', title: 'Daños al dron', text: 'Protección frente a golpes, caídas y accidentes durante tus vuelos.', tag: 'A tu medida' },
@@ -90,43 +95,103 @@ function App() {
   const [activeFaq, setActiveFaq] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
-  const currentPath = window.location.pathname.replace(/\/$/, '') || '/'
+
+  const currentPath = currentHash.startsWith('#/')
+    ? currentHash.slice(1).replace(/\/$/, '')
+    : '/'
+
   const isQuotePage = currentPath === '/presupuesto'
   const isProductsPage = currentPath === '/productos'
   const isFaqPage = currentPath === '/faq'
   const isAboutPage = currentPath === '/sobre-nosotros'
-  const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : currentPath === '/' ? 'home' : ''
+
+  const activeNav = isProductsPage
+    ? 'products'
+    : isAboutPage
+      ? 'about'
+      : isFaqPage
+        ? 'faq'
+        : currentHash === '#nosotros'
+          ? 'about'
+          : currentHash === '#faq'
+            ? 'faq'
+            : currentPath === '/'
+              ? 'home'
+              : ''
+
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
-    const updateHash = () => setCurrentHash(window.location.hash)
-    window.addEventListener('hashchange', updateHash)
-    const transitionNavigation = (event) => {
-      const link = event.target.closest('a[href]')
-      if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return
-      const destination = new URL(link.href, window.location.href)
-      if (destination.origin !== window.location.origin || destination.pathname === window.location.pathname) return
-      event.preventDefault()
-      document.documentElement.classList.add('is-leaving')
-      window.setTimeout(() => window.location.assign(destination.href), 280)
+    const updateHash = () => {
+      setCurrentHash(window.location.hash)
     }
-    document.addEventListener('click', transitionNavigation)
+
+    window.addEventListener('hashchange', updateHash)
+
     return () => {
       window.removeEventListener('hashchange', updateHash)
-      document.removeEventListener('click', transitionNavigation)
     }
   }, [])
 
   return (
     <>
-      <header className="site-header">
-        <a className="brand" href="/" aria-label="SegurosDron, inicio"><span>SEGUROS<span className="brand-light">DRON</span></span></a>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X /> : <Menu />}</button>
-        <nav className={menuOpen ? 'nav-links nav-open' : 'nav-links'}>
-          <a className={activeNav === 'home' ? 'nav-active' : ''} href="/" onClick={closeMenu} aria-current={activeNav === 'home' ? 'page' : undefined}>Inicio</a><a className={activeNav === 'products' ? 'nav-active' : ''} href="/productos" onClick={closeMenu} aria-current={activeNav === 'products' ? 'page' : undefined}>Nuestros productos</a><a className={activeNav === 'about' ? 'nav-active' : ''} href="/sobre-nosotros" onClick={closeMenu} aria-current={activeNav === 'about' ? 'page' : undefined}>Sobre nosotros</a><a className={activeNav === 'faq' ? 'nav-active' : ''} href="/faq" onClick={closeMenu} aria-current={activeNav === 'faq' ? 'page' : undefined}>FAQ</a>
-        </nav>
-        <span className="header-cta inert-link" aria-disabled="true">Solicitar presupuesto <ArrowUpRight size={16} /></span>
-      </header>
+<header className="site-header">
+  <a
+    className="brand"
+    href={url('/')}
+    aria-label="SegurosDron, inicio"
+  >
+    <span>
+      SEGUROS<span className="brand-light">DRON</span>
+    </span>
+  </a>
+
+  <button
+    className="menu-toggle"
+    onClick={() => setMenuOpen(!menuOpen)}
+    aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+  >
+    {menuOpen ? <X /> : <Menu />}
+  </button>
+
+  <nav className={menuOpen ? 'nav-links nav-open' : 'nav-links'}>
+    <a
+      className={activeNav === 'home' ? 'nav-active' : ''}
+      href={url('/')}
+      onClick={closeMenu}
+    >
+      Inicio
+    </a>
+
+    <a
+      className={activeNav === 'products' ? 'nav-active' : ''}
+      href={url('/productos')}
+      onClick={closeMenu}
+    >
+      Nuestros productos
+    </a>
+
+    <a
+      className={activeNav === 'about' ? 'nav-active' : ''}
+      href={url('/sobre-nosotros')}
+      onClick={closeMenu}
+    >
+      Sobre nosotros
+    </a>
+
+    <a
+      className={activeNav === 'faq' ? 'nav-active' : ''}
+      href={url('/faq')}
+      onClick={closeMenu}
+    >
+      FAQ
+    </a>
+  </nav>
+
+  <span className="header-cta inert-link" aria-disabled="true">
+    Solicitar presupuesto <ArrowUpRight size={16} />
+  </span>
+</header>
 
       {isQuotePage ? <QuotePage /> : isProductsPage ? <ProductsPage /> : isAboutPage ? <AboutPage /> : isFaqPage ? <FaqPage /> : <main>
         <section className="hero" id="inicio">
@@ -147,7 +212,7 @@ function App() {
         <section className="products section-wrap" id="productos">
           <div className="section-top"><div><h2>Tu dron. Tu forma<br />de <span>protegerlo.</span></h2></div></div>
           <div className="product-grid">{products.map((product) => <article className="product-card" key={product.number}><div className="product-card-top"><span>{product.number}</span></div><h3>{product.title}</h3><p>{product.text}</p><div className="product-card-bottom"><span>{product.tag}</span></div></article>)}</div>
-          <div className="products-note"><span><Check size={15} /> Contratación sencilla</span><span><Check size={15} /> Opciones para profesionales y aficionados</span><a href="/productos">Ver todos los productos <ArrowRight size={15} /></a></div>
+          <div className="products-note"><span><Check size={15} /> Contratación sencilla</span><span><Check size={15} /> Opciones para profesionales y aficionados</span><a href={url('/productos')}>Ver todos los productos <ArrowRight size={15} /></a></div>
         </section>
 
         <section className="about" id="nosotros"><div className="about-image"><img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1300&q=85" alt="Dron de uso profesional preparado para volar" /></div><div className="about-copy"><h2>Atención cercana,<br />desde <span>Terrassa.</span></h2><p>SegurosDron cuenta con la atención de Verdaguer Assegurances, una oficina de seguros en Terrassa.</p><p>Estamos en c/ Baldrich 69 A. Puedes llamarnos o escribirnos para resolver tus dudas sobre la protección de tu dron.</p><div className="about-stat"><strong>Verdaguer Assegurances</strong><span>Terrassa</span></div></div></section>
@@ -158,9 +223,9 @@ function App() {
       </main>}
 
       <footer className="footer">
-        <div className="footer-brand-group"><a className="brand footer-brand" href="/"><span>Seguros<span className="brand-light">Dron</span></span></a><p>Seguro para drones, con atención cercana en Terrassa.</p></div>
+        <div className="footer-brand-group"><a className="brand footer-brand" href={url('/')}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Seguro para drones, con atención cercana en Terrassa.</p></div>
         <div className="footer-contact"><strong>Verdaguer Assegurances <span>· Terrassa</span></strong><div className="footer-contact-details"><span>c/ Baldrich 69 A, 08221 Terrassa</span><span>93 706 99 52</span><span>administracio@verdaguer-assegurances.com</span><span>www.verdaguer-assegurances.com</span><span>De 9h a 14h y 15h a 19h</span></div></div>
-        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href="/productos">Nuestros productos</a><a href="/sobre-nosotros">Sobre nosotros</a><a href="/faq">FAQ</a><span className="inert-link" aria-disabled="true">Presupuesto</span></nav>
+        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={url('/productos')}>Nuestros productos</a><a href={url('/sobre-nosotros')}>Sobre nosotros</a><a href={url('/faq')}>FAQ</a><span className="inert-link" aria-disabled="true">Presupuesto</span></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
     </>
@@ -211,9 +276,9 @@ function AboutPage() {
         <div className="about-page-hero-copy">
           <h1>Seguros para drones,<br /><span>con atención cercana.</span></h1>
           <p>Somos agentes de Coverdrone en Terrassa. Desde Verdaguer Assegurances te orientamos sobre las opciones para proteger tus vuelos recreativos o profesionales.</p>
-          <a className="button-primary" href="/productos">Conoce nuestros productos <ArrowRight size={17} /></a>
+          <a className="button-primary" href={url('/productos')}>Conoce nuestros productos <ArrowRight size={17} /></a>
         </div>
-        <div className="about-page-visual"><img src="/images/sobre-nosotros-handshake.jpg" alt="Dos profesionales dándose la mano durante una reunión" /></div>
+        <div className="about-page-visual"><img src={`${BASE}/images/sobre-nosotros-handshake.jpg`} alt="Dos profesionales dándose la mano durante una reunión" /></div>
       </section>
 
       <section className="about-agency section-wrap">
@@ -273,7 +338,7 @@ function QuotePage() {
   return (
     <main className="quote-page">
       <div className="quote-page-intro">
-        <a className="quote-back" href="/"><ArrowLeft size={16} /> Inicio</a>
+        <a className="quote-back" href={url('/')}><ArrowLeft size={16} /> Inicio</a>
         <h1>Tu próximo vuelo<br />empieza con un <span>sí.</span></h1>
         <p>Cuéntanos un poco sobre tu dron y lo que necesitas. Te enviaremos una propuesta sin compromiso.</p>
         <div className="quote-promise"><span className="promise-check"><Check size={15} /></span><span>Rápido, sencillo y sin compromiso.</span></div>
@@ -288,3 +353,4 @@ function QuotePage() {
 }
 
 export default App
+
