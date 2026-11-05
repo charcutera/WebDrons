@@ -63,6 +63,8 @@ const heroSlides = [
   },
 ]
 
+const appPath = (path = '') => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
 const faqCategories = [
   { id: 'recreativo', title: 'Póliza recreativa', text: 'Cobertura, equipo y cambios para vuelos de ocio.', icon: Sparkles },
   { id: 'profesional', title: 'Póliza profesional', text: 'Responsabilidad, actividad y flotas de drones.', icon: Compass },
@@ -112,12 +114,13 @@ function App() {
   const [currentHash, setCurrentHash] = useState(window.location.hash)
   const currentPath = window.location.pathname.replace(/\/$/, '') || '/'
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
-  const isHomePage = currentPath === '/' || currentPath === basePath
-  const isQuotePage = currentPath === '/presupuesto'
-  const isProductsPage = currentPath === '/productos'
-  const isFaqPage = currentPath === '/faq'
-  const isAboutPage = currentPath === '/sobre-nosotros'
-  const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : currentPath === '/' ? 'home' : ''
+  const routePath = basePath && currentPath.startsWith(basePath) ? currentPath.slice(basePath.length) || '/' : currentPath
+  const isHomePage = routePath === '/'
+  const isQuotePage = routePath === '/presupuesto'
+  const isProductsPage = routePath === '/productos'
+  const isFaqPage = routePath === '/faq'
+  const isAboutPage = routePath === '/sobre-nosotros'
+  const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : isHomePage ? 'home' : ''
   const closeMenu = () => setMenuOpen(false)
 
   useEffect(() => {
@@ -158,10 +161,10 @@ function App() {
   return (
     <>
       <header className="site-header">
-        <a className="brand" href="/" aria-label="SegurosDron, inicio"><span>SEGUROS<span className="brand-light">DRON</span></span></a>
+        <a className="brand" href={appPath()} aria-label="SegurosDron, inicio"><span>SEGUROS<span className="brand-light">DRON</span></span></a>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X /> : <Menu />}</button>
         <nav className={menuOpen ? 'nav-links nav-open' : 'nav-links'}>
-          <a className={activeNav === 'home' ? 'nav-active' : ''} href="/" onClick={closeMenu} aria-current={activeNav === 'home' ? 'page' : undefined}>Inicio</a><a className={activeNav === 'products' ? 'nav-active' : ''} href="/productos" onClick={closeMenu} aria-current={activeNav === 'products' ? 'page' : undefined}>Nuestros productos</a><a className={activeNav === 'about' ? 'nav-active' : ''} href="/sobre-nosotros" onClick={closeMenu} aria-current={activeNav === 'about' ? 'page' : undefined}>Sobre nosotros</a><a className={activeNav === 'faq' ? 'nav-active' : ''} href="/faq" onClick={closeMenu} aria-current={activeNav === 'faq' ? 'page' : undefined}>FAQ</a>
+          <a className={activeNav === 'home' ? 'nav-active' : ''} href={appPath()} onClick={closeMenu} aria-current={activeNav === 'home' ? 'page' : undefined}>Inicio</a><a className={activeNav === 'products' ? 'nav-active' : ''} href={appPath('productos')} onClick={closeMenu} aria-current={activeNav === 'products' ? 'page' : undefined}>Nuestros productos</a><a className={activeNav === 'about' ? 'nav-active' : ''} href={appPath('sobre-nosotros')} onClick={closeMenu} aria-current={activeNav === 'about' ? 'page' : undefined}>Sobre nosotros</a><a className={activeNav === 'faq' ? 'nav-active' : ''} href={appPath('faq')} onClick={closeMenu} aria-current={activeNav === 'faq' ? 'page' : undefined}>FAQ</a>
         </nav>
         <span className="header-cta inert-link" aria-disabled="true">Cotizar precio <ArrowUpRight size={16} /></span>
       </header>
@@ -190,7 +193,7 @@ function App() {
         <section className="products section-wrap" id="productos">
           <div className="section-top"><div><h2>Tu operación aérea.<br /><span>Bien protegida.</span></h2></div></div>
           <div className="product-grid">{products.map((product) => <article className="product-card" key={product.number}><div className="product-card-top"><span>{product.number}</span></div><h3>{product.title}</h3><p>{product.text}</p><div className="product-card-bottom"><span>{product.tag}</span></div></article>)}</div>
-          <div className="products-note"><span><Check size={15} /> Opciones para actividad profesional</span><span><Check size={15} /> Equipos, flotas y responsabilidad</span><a href="/productos">Ver todos los productos <ArrowRight size={15} /></a></div>
+          <div className="products-note"><span><Check size={15} /> Opciones para actividad profesional</span><span><Check size={15} /> Equipos, flotas y responsabilidad</span><a href={appPath('productos')}>Ver todos los productos <ArrowRight size={15} /></a></div>
         </section>
 
         <section className="about" id="nosotros"><div className="about-image"><img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1300&q=85" alt="Dron profesional preparado para una operación aérea" /></div><div className="about-copy"><h2>Tu actividad,<br /><span>nuestro enfoque.</span></h2><p>Somos broker de Coverdrone y nos especializamos en seguros para empresas y profesionales que trabajan con drones.</p><p>Te ayudamos a revisar opciones de responsabilidad civil, protección de equipos y coberturas relacionadas con tu operación.</p><div className="about-stat"><strong>Broker de Coverdrone</strong><span>Seguros para operaciones profesionales</span></div></div></section>
@@ -201,9 +204,9 @@ function App() {
       </main>}
 
       <footer className="footer">
-        <div className="footer-brand-group"><a className="brand footer-brand" href="/"><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
+        <div className="footer-brand-group"><a className="brand footer-brand" href={appPath()}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
         <div className="footer-contact"><strong>Especialistas en seguros para drones</strong><div className="footer-contact-details"><span>Broker de Coverdrone</span><a href="tel:+34611234567">611 234 567</a></div></div>
-        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href="/productos">Nuestros productos</a><a href="/sobre-nosotros">Sobre nosotros</a><a href="/faq">FAQ</a><span className="inert-link" aria-disabled="true">Cotizar precio</span></nav>
+        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><span className="inert-link" aria-disabled="true">Cotizar precio</span></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
     </>
@@ -254,9 +257,9 @@ function AboutPage() {
         <div className="about-page-hero-copy">
           <h1>Seguros para drones,<br /><span>con atención cercana.</span></h1>
           <p>Somos un broker de Coverdrone especializado en seguros para empresas y profesionales que trabajan con drones. Te orientamos sobre opciones para proteger tus operaciones.</p>
-          <a className="button-primary" href="/productos">Conoce nuestros productos <ArrowRight size={17} /></a>
+          <a className="button-primary" href={appPath('productos')}>Conoce nuestros productos <ArrowRight size={17} /></a>
         </div>
-        <div className="about-page-visual"><img src="/images/sobre-nosotros-handshake.jpg" alt="Dos profesionales dándose la mano durante una reunión" /></div>
+        <div className="about-page-visual"><img src={appPath('images/sobre-nosotros-handshake.jpg')} alt="Dos profesionales dándose la mano durante una reunión" /></div>
       </section>
 
       <section className="about-agency section-wrap">
@@ -316,7 +319,7 @@ function QuotePage() {
   return (
     <main className="quote-page">
       <div className="quote-page-intro">
-        <a className="quote-back" href="/"><ArrowLeft size={16} /> Inicio</a>
+        <a className="quote-back" href={appPath()}><ArrowLeft size={16} /> Inicio</a>
         <h1>Tu próximo vuelo<br />empieza con un <span>sí.</span></h1>
         <p>Cuéntanos un poco sobre tu dron y lo que necesitas. Te enviaremos una propuesta sin compromiso.</p>
         <div className="quote-promise"><span className="promise-check"><Check size={15} /></span><span>Rápido, sencillo y sin compromiso.</span></div>
