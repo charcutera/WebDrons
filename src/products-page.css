@@ -69,3 +69,42 @@
 .coverage-options-section .coverage-disclaimer{color:#647168}
 @media(max-width:900px){.products-highlights{grid-template-columns:repeat(2,minmax(0,1fr));margin-left:7%;margin-right:7%}.products-highlights>div:nth-child(3){border-left:0;border-top:1px solid #cbd8c2}.products-highlights>div:nth-child(4){border-top:1px solid #cbd8c2}.coverage-options-heading h2{font-size:36px}.coverage-options-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.products-highlights{grid-template-columns:1fr;margin:15px 6% 0;padding:5px 15px}.products-highlights>div{align-items:flex-start;padding:12px 0;text-align:left}.products-highlights>div+div{border-left:0;border-top:1px solid #cbd8c2}.products-highlights strong{font-size:16px}.products-highlights span{font-size:12px}.coverage-options-section{padding:58px 6%}.coverage-options-heading{display:block;margin-bottom:22px}.coverage-options-heading h2{font-size:34px}.coverage-options-heading>p{font-size:14px;margin-top:12px}.coverage-options-grid{grid-template-columns:1fr;gap:10px}.coverage-options-card{padding:18px}.coverage-options-card h3{font-size:17px}.coverage-options-card li{font-size:13px}}
+
+.coverage-comparison-section{background:#f0f3ed;padding:70px 8.5% 76px}
+.coverage-comparison-inner{max-width:1250px;margin:0 auto}
+.coverage-comparison-heading{margin:0 0 25px}
+.coverage-comparison-heading h2{font-family:Manrope,sans-serif;font-size:clamp(34px,4vw,46px);line-height:1.08;letter-spacing:-.05em;color:#1b2d23;margin:10px 0 8px}
+.coverage-comparison-heading h2 strong{font-weight:600;color:#718b59}
+.coverage-comparison-heading p{margin:0;color:#718078;font-size:14px;line-height:1.6}
+.coverage-table-scroll{overflow:clip;border:1px solid #dfe5dc;border-radius:14px;background:#fff;box-shadow:0 12px 34px #1e39220a}
+.coverage-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;color:#35463a}
+.coverage-table thead th{position:-webkit-sticky;position:sticky;top:78px;z-index:5;padding:14px 15px;text-align:center;font-family:Manrope,sans-serif;font-size:16px;font-weight:700;background:#dfe8d6;background-clip:padding-box;color:#294333;border-bottom:1px solid #d7e0d1;box-shadow:0 2px 0 #d7e0d1}
+.coverage-table thead th:first-child{width:64%;text-align:left;border-radius:14px 0 0 0}
+.coverage-table thead th:nth-child(2),.coverage-table thead th:nth-child(3){width:18%}
+.coverage-table thead th:nth-child(3){background:#244b3b;color:#fff;border-radius:0 14px 0 0}
+.coverage-table tbody th,.coverage-table tbody td{padding:10px 15px;border-bottom:1px solid #e8ece6;font-size:14px;line-height:1.4}
+.coverage-table tbody th{font-weight:500;text-align:left;overflow-wrap:anywhere}
+.coverage-table tbody td{text-align:center}
+.coverage-table tbody tr:last-child th,.coverage-table tbody tr:last-child td{border-bottom:0}
+.coverage-table tbody tr:not(.coverage-category):hover{background:#f8faf6}
+.coverage-table .coverage-category th{padding:10px 15px;background:#e5ebe0;color:#314b37;font-family:Manrope,sans-serif;font-size:14px;font-weight:700;text-align:left;border-bottom:1px solid #d8e1d3}
+.coverage-table-check{display:grid;place-items:center;width:20px;height:20px;margin:0 auto;border-radius:50%;background:#e2ecd9;color:#456a3e}
+.coverage-table-dash{color:#bdc7ba}
+.coverage-table-note{max-width:940px;margin:15px 0 0;color:#748078;font-size:11px;line-height:1.65}
+@media(max-width:900px){.coverage-comparison-section{padding-left:7%;padding-right:7%}}
+@media(max-width:680px){
+  .coverage-comparison-section{padding:54px 5% 58px}
+  .coverage-comparison-heading{margin-bottom:19px}
+  .coverage-comparison-heading h2{font-size:34px}
+  .coverage-comparison-heading p{font-size:13px}
+  .coverage-table-scroll{border-radius:12px}
+  .coverage-table thead th{top:65px;padding:12px 7px;font-size:14px}
+  .coverage-table thead th:first-child{width:60%;border-radius:12px 0 0 0}
+  .coverage-table thead th:nth-child(2),.coverage-table thead th:nth-child(3){width:20%}
+  .coverage-table thead th:nth-child(3){border-radius:0 12px 0 0}
+  .coverage-table tbody th,.coverage-table tbody td{padding:9px 7px;font-size:12px;line-height:1.4}
+  .coverage-table .coverage-category th{padding:9px;font-size:13px}
+  .coverage-table-check{width:18px;height:18px}
+  .coverage-table-check svg{width:12px;height:12px}
+  .coverage-table-note{font-size:10px}
+}

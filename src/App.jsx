@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Clock3, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Package, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { Fragment, useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Network, Package, PackageCheck, Satellite, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
 const products = [
   { number: '01', title: 'Responsabilidad civil', text: 'Opciones para proteger tu empresa ante reclamaciones por daños a terceros durante una operación.', tag: 'Cobertura para actividad profesional' },
@@ -23,10 +23,63 @@ const productGroups = [
   { title: 'Responsabilidad profesional', label: 'OPCIÓN COMERCIAL', text: 'Protección ante reclamaciones relacionadas con errores u omisiones negligentes en tu actividad.', icon: FileText },
 ]
 
-const coverageOptions = [
-  { title: 'Responsabilidad frente a terceros', icon: Scale, items: ['Daños personales y materiales', 'Responsabilidad aeronáutica y de producto', 'Privacidad y protección de datos'] },
-  { title: 'Dron y equipo', icon: ShieldCheck, items: ['Daño accidental y robo', 'Pérdida del dron (flyaway)', 'Protección durante vuelo, transporte y almacenamiento'] },
-  { title: 'Opciones para tu actividad', icon: Settings, items: ['Equipo alquilado y gastos asociados', 'Dron de sustitución', 'Responsabilidad profesional y recuperación de datos'] },
+const coverageComparison = [
+  {
+    category: 'Responsabilidad frente a terceros',
+    rows: [
+      { label: 'Daños a la propiedad de terceros', recreational: true, commercial: true },
+      { label: 'Lesiones personales a terceros', recreational: true, commercial: true },
+      { label: 'Responsabilidad en tierra del fotógrafo', commercial: true },
+      { label: 'Responsabilidad de producto: daños materiales', commercial: true },
+      { label: 'Responsabilidad de producto: lesiones corporales', commercial: true },
+      { label: 'Responsabilidad civil de aviación (riesgos de guerra)', commercial: true },
+      { label: 'Invasión de la intimidad', commercial: true },
+      { label: 'Incidentes de responsabilidad sobre datos', commercial: true },
+      { label: 'Uso civil de aeródromos del Ministerio de Defensa', commercial: true },
+      { label: 'Responsabilidad por deriva de productos químicos', commercial: true },
+      { label: 'Responsabilidad civil sobre la carga', commercial: true },
+    ],
+  },
+  {
+    category: 'Pérdida o daño accidental del equipo',
+    rows: [
+      { label: 'Daños accidentales', recreational: true, commercial: true },
+      { label: 'Robo', recreational: true, commercial: true },
+      { label: 'Pérdida del dron (flyaway)', recreational: true, commercial: true },
+      { label: 'Error del piloto', recreational: true, commercial: true },
+      { label: 'Pérdida en el agua', recreational: true, commercial: true },
+      { label: 'Pérdida de potencia', recreational: true, commercial: true },
+      { label: 'Pérdida de enlace de datos', recreational: true, commercial: true },
+      { label: 'Impacto con aves', recreational: true, commercial: true },
+      { label: 'Fallo mecánico durante el vuelo', recreational: true, commercial: true },
+      { label: 'Cobertura durante almacenamiento, transporte y vuelo', recreational: true, commercial: true },
+      { label: 'Retirada de restos', recreational: true, commercial: true },
+      { label: 'Costes por invasión de propiedad ajena', recreational: true, commercial: true },
+      { label: 'Equipo no propio: cargos de alquiler continuados', recreational: true, commercial: true },
+    ],
+  },
+  {
+    category: 'Dron de sustitución y continuidad',
+    rows: [
+      { label: 'Alquiler de un dron de sustitución', commercial: true },
+      { label: 'Restablecimiento de datos', commercial: true },
+      { label: 'Incompatibilidad de software', recreational: true, commercial: true },
+    ],
+  },
+  {
+    category: 'Responsabilidad profesional',
+    rows: [
+      { label: 'Actos, errores u omisiones negligentes en la actividad empresarial', commercial: true },
+    ],
+  },
+]
+
+const beyondVisualOperations = [
+  { text: 'Drones grandes de 500 kilogramos o más', image: true },
+  { text: 'Vuelos BVLO, incluidos vuelos subterráneos o en espacios confinados', icon: Satellite },
+  { text: 'Múltiples drones a la vez, incluidas formaciones de enjambre de más de 1.000 drones', icon: Network },
+  { text: 'Servicios de entrega con drones', icon: PackageCheck },
+  { text: 'Espectáculos de luces con drones', icon: Sparkles },
 ]
 
 const operationTypes = [
@@ -60,6 +113,10 @@ const heroSlides = [
   {
     src: 'https://images.unsplash.com/photo-1547044283-81919b74c110?auto=format&fit=crop&fm=jpg&q=85&w=1800',
     alt: 'Profesional pilotando un dron y controlando su cámara',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/dron-incendios.jpg`,
+    alt: 'Dron apoyando a los equipos de emergencia durante un incendio forestal',
   },
 ]
 
@@ -172,8 +229,8 @@ function App() {
       {isQuotePage ? <QuotePage /> : isProductsPage ? <ProductsPage /> : isAboutPage ? <AboutPage /> : isFaqPage ? <FaqPage /> : <main>
         <section className="hero" id="inicio">
           <div className="hero-copy">
-            <h1>Tu operación,<br /><span>bien protegida.</span></h1>
-            <p className="hero-subtitle">Seguros especializados para empresas que trabajan con drones: responsabilidad civil, equipos y operaciones profesionales.</p>
+            <h1>El seguro que tu<br /><span>dron necesita.</span></h1>
+            <p className="hero-subtitle">Seguro especializado para drones de uso profesional y recreativo. Protege tus vuelos, tus equipos y tu actividad con soluciones del broker de Coverdrone en España.</p>
             <div className="hero-actions"><span className="button-primary inert-link" aria-disabled="true">Cotizar precio <ArrowRight size={17} /></span></div>
             <div className="about-partner hero-partner"><span>Broker de</span><img src={appPath('images/cropped-coverdrone_logo.png')} alt="Coverdrone" /></div>
           </div>
@@ -189,7 +246,10 @@ function App() {
           </div>
         </section>
 
-        <section className="trust-strip"><div className="trust-lead">PARA LOS QUE MIRAN MÁS ALLÁ</div><div className="trust-item"><ShieldCheck size={19} /><span>Protección especializada</span></div><div className="trust-item"><Clock3 size={19} /><span>Un proceso sencillo</span></div><div className="trust-item"><Sparkles size={18} /><span>Coberturas flexibles</span></div></section>
+        <section className="beyond-visual section-wrap">
+          <div className="beyond-visual-heading"><h2>Podemos asegurar</h2></div>
+          <ul>{beyondVisualOperations.map(({ text, icon: Icon, image }) => <li key={text}><span className="beyond-visual-icon">{image ? <img src={appPath('images/drone-icon.png')} alt="" /> : <Icon size={36} />}</span><p>{text}</p></li>)}</ul>
+        </section>
 
         <section className="products section-wrap" id="productos">
           <div className="section-top"><div><h2>Tu operación aérea.<br /><span>Bien protegida.</span></h2></div></div>
@@ -206,7 +266,7 @@ function App() {
 
       <footer className="footer">
         <div className="footer-brand-group"><a className="brand footer-brand" href={appPath()}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
-        <div className="footer-contact"><strong>Especialistas en seguros para drones</strong><div className="footer-contact-details"><a href="tel:+34611234567">611 234 567</a></div></div>
+        <div className="footer-contact"><strong>Broker de seguros especialista en seguros de drones</strong><div className="footer-contact-details"><span>Número de registro DGPFAT F215</span><span>Dirección General de Seguros</span><a href="tel:+34900732322">900732322</a></div></div>
         <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><span className="inert-link" aria-disabled="true">Cotizar precio</span></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
@@ -232,10 +292,17 @@ function ProductsPage() {
         <p className="coverage-disclaimer">Las coberturas, límites y exclusiones dependen de la póliza contratada. Te facilitaremos todos los detalles en tu propuesta.</p>
       </section>
 
-      <section className="coverage-options-section section-wrap">
-        <div className="coverage-options-heading"><h2>¿Qué puede incluir<br /><span>tu póliza?</span></h2></div>
-        <div className="coverage-options-grid">{coverageOptions.map(({ title, icon: Icon, items }) => <article className="coverage-options-card" key={title}><span className="coverage-options-icon"><Icon size={22} /></span><h3>{title}</h3><ul>{items.map((item) => <li key={item}><Check size={15} />{item}</li>)}</ul></article>)}</div>
-        <p className="coverage-disclaimer">Las coberturas indicadas son opciones sujetas a disponibilidad, límites, exclusiones y términos de la póliza. La cobertura territorial también puede estar sujeta a territorios excluidos.</p>
+      <section className="coverage-comparison-section">
+        <div className="coverage-comparison-inner">
+          <div className="coverage-comparison-heading"><span>COMPARATIVA DE COBERTURAS</span><h2>Recreativo y comercial,<br /><strong>de un vistazo.</strong></h2><p>Consulta las opciones disponibles en cada modalidad.</p></div>
+          <div className="coverage-table-scroll">
+            <table className="coverage-table">
+              <thead><tr><th scope="col">Cobertura</th><th scope="col">Recreativo</th><th scope="col">Comercial</th></tr></thead>
+              <tbody>{coverageComparison.map((group) => <Fragment key={group.category}><tr className="coverage-category"><th colSpan="3" scope="colgroup">{group.category}</th></tr>{group.rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{row.recreational ? <span className="coverage-table-check" aria-label="Disponible"><Check size={14} /></span> : <span className="coverage-table-dash" aria-label="No indicado">—</span>}</td><td>{row.commercial ? <span className="coverage-table-check" aria-label="Disponible"><Check size={14} /></span> : <span className="coverage-table-dash" aria-label="No indicado">—</span>}</td></tr>)}</Fragment>)}</tbody>
+            </table>
+          </div>
+          <p className="coverage-table-note">Resumen orientativo. La disponibilidad de cada cobertura, sus límites, exclusiones y condiciones dependen de la póliza contratada y de la operación asegurada.</p>
+        </div>
       </section>
 
       <section className="operation-types-section section-wrap">
@@ -277,7 +344,7 @@ function AboutPage() {
       </section>
 
       <section className="about-contact-banner">
-        <div><h2>Hablemos de tu próximo vuelo.</h2><p>Especialistas en seguros para drones</p><p><a className="about-contact-phone" href="tel:+34611234567">611 234 567</a></p></div>
+        <div><h2>Hablemos de tu próximo vuelo.</h2><p>Broker de seguros especialista en seguros de drones</p><p>Número de registro DGPFAT F215 · Dirección General de Seguros</p><p><a className="about-contact-phone" href="tel:+34900732322">900732322</a></p></div>
         <span className="button-light inert-link" aria-disabled="true">Habla con nosotros <ArrowRight size={17} /></span>
       </section>
     </main>
