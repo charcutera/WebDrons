@@ -1,0 +1,10 @@
+{
+  "buildCommand": "VITE_BASE_PATH=/ npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/presupuesto", "destination": "/index.html" },
+    { "source": "/productos", "destination": "/index.html" },
+    { "source": "/faq", "destination": "/index.html" },
+    { "source": "/sobre-nosotros", "destination": "/index.html" }
+  ]
+}

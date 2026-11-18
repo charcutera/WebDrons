@@ -1,6 +1,19 @@
-.products-page-hero{min-height:590px;display:grid;grid-template-columns:.82fr 1.18fr;background:#eef1e9;padding-left:8%;overflow:hidden}
-.products-page-hero-copy{padding:47px 8% 48px 0;align-self:center}
-.products-page-hero-copy .quote-back{margin:0 0 30px}
+.products-page-hero{
+  min-height:590px;
+  display:grid;
+  grid-template-columns:.82fr 1.18fr;
+  background:#eef1e9;
+  padding-left:8%;
+  overflow:hidden}
+
+
+.products-page-hero-copy{
+  padding:47px 8% 48px 0;
+  align-self:center
+}
+.products-page-hero-copy .quote-back{
+  margin:0 0 30px
+}
 .products-page-hero-copy h1{font-family:Manrope,sans-serif;color:#1b2d23;font-size:clamp(48px,5vw,67px);line-height:1.05;letter-spacing:-.06em;font-weight:600;margin:19px 0 15px}
 .products-page-hero-copy h1 span{color:#7e9866}
 .products-page-hero-copy>p{max-width:430px;color:#68736c;font-size:13px;line-height:1.85;margin:0 0 24px}

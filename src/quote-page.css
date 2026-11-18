@@ -1,13 +1,76 @@
-.quote-page{min-height:calc(100vh - 233px);background:#e9eee5;display:grid;grid-template-columns:1fr minmax(340px,470px);align-items:center;gap:9%;padding:70px 13%}
-.quote-page-intro{max-width:480px}
-.quote-back{display:inline-flex;align-items:center;gap:8px;color:#637267;font-size:10px;margin-bottom:42px}
-.back-arrow{transform:rotate(90deg)}
-.quote-page-intro h1{font-family:Manrope,sans-serif;letter-spacing:-.06em;font-size:clamp(48px,5.5vw,68px);line-height:1.04;margin:22px 0 16px;font-weight:600;color:#1b2d23}
-.quote-page-intro h1 span{color:#7e9866}
-.quote-page-intro>p{font-size:13px;line-height:1.8;color:#68736c;max-width:370px;margin:0}
-.quote-page .quote-promise{color:#4a5e4e;margin-top:25px}
-.quote-page .promise-check{background:#d9e5cd;color:#526d48}
-.quote-page-note{display:flex;align-items:center;gap:10px;padding-top:24px;margin-top:31px;border-top:1px solid #d2dbce;color:#718076;font-size:10px;line-height:1.6;max-width:350px}
-.quote-page-note svg{color:#63834e;flex:none}
-.quote-page .quote-form{box-shadow:0 15px 45px #203f3110}
-@media(max-width:680px){.quote-page{min-height:calc(100vh - 228px);grid-template-columns:1fr;padding:39px 6%;gap:25px}.quote-back{margin-bottom:28px}.quote-page-intro h1{font-size:43px;margin:17px 0 12px}.quote-page-intro>p{font-size:11px}.quote-page-note{margin-top:19px;padding-top:16px}}
+.quote-page{min-height:calc(100vh - 233px);background:#f2f4f0;padding:48px 6% 72px}
+.quote-form-shell{max-width:980px;margin:0 auto}
+.quote-previous-step:hover{color:#315f48}
+.quote-form-intro{margin-bottom:28px}
+.quote-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;color:#718177}
+.quote-form-intro h1{font-family:Manrope,sans-serif;letter-spacing:-.05em;font-size:clamp(36px,5vw,52px);line-height:1.08;margin:12px 0;font-weight:600;color:#1b2d23}
+.quote-form-intro h1 span{color:#7e9866}
+.quote-form-intro p{font-size:14px;line-height:1.7;color:#68736c;margin:0}
+.quote-page .quote-form{width:100%;max-width:none;padding:30px 34px;background:#fff;border:1px solid #e0e5de;box-shadow:0 15px 45px #203f3110}
+.quote-progress{display:grid;grid-template-columns:repeat(6,1fr);margin:-30px -34px 26px;border-bottom:4px solid #dfe4dc}
+.quote-progress-step{position:relative;display:grid;place-items:center;min-height:62px;padding:12px 8px;color:#718076;text-align:center;font-size:14px}
+.quote-progress-step:after{position:absolute;right:0;bottom:-4px;left:0;height:4px;background:transparent;content:''}
+.quote-progress-current,.quote-progress-complete{color:#244b3b;font-weight:700}
+.quote-progress-current:after,.quote-progress-complete:after{background:#244b3b}
+.quote-required-note{margin:-12px 0 16px;color:#68736c;font-size:12px;text-align:right}
+.quote-validation-message{margin:0 0 18px;padding:12px 14px;border:1px solid #d88a82;border-radius:5px;background:#fff2f0;color:#a33b2f;font-size:14px;line-height:1.5}
+.quote-submit-error{margin:14px 0 0;padding:12px 14px;border:1px solid #d88a82;border-radius:5px;background:#fff2f0;color:#a33b2f;font-size:14px;line-height:1.5}
+.quote-page .form-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;margin-bottom:24px;border-bottom:1px solid #e8ebe5;color:#718076;font-size:10px;font-weight:700;letter-spacing:.1em}
+.quote-step h2{font-family:Manrope,sans-serif;font-size:22px;letter-spacing:-.03em;color:#1b2d23;margin:0 0 22px}
+.quote-fields{display:grid;gap:14px}
+.quote-page .quote-field{display:grid;grid-template-columns:minmax(230px,1fr) minmax(260px,1fr);align-items:center;gap:24px;margin:0;color:#34483a;font-size:15px;font-weight:400}
+.quote-field-label{display:flex;align-items:center;gap:7px;line-height:1.45}
+.quote-required{color:#d92727;font-weight:700;margin-left:2px}
+.quote-help{position:relative;z-index:1;flex:none;width:18px;height:18px;border-radius:50%;display:inline-grid;place-items:center;background:#77808e;color:white;font-size:12px;font-weight:700;cursor:help}
+.quote-help[title]:after{position:absolute;top:calc(100% + 9px);left:0;z-index:20;width:max-content;max-width:min(300px,calc(100vw - 56px));padding:12px 14px;border:1px solid #dfe4dc;border-radius:5px;background:#fff;color:#445148;box-shadow:0 8px 22px #172b1c20;content:attr(title);font-size:13px;font-weight:400;line-height:1.45;text-align:left;white-space:normal;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-3px);transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
+.quote-help[title]:hover:after,.quote-help[title]:focus:after{opacity:1;visibility:visible;transform:translateY(0)}
+.quote-help[title]:focus-visible{outline:2px solid #62814e;outline-offset:3px}
+.quote-page .quote-field input,.quote-page .quote-field select,.quote-page .quote-field textarea{width:100%;min-height:44px;padding:8px 12px;border:1px solid #b8c2b5;border-radius:6px;background:#fff;color:#244b3b;font-size:14px;outline:none}
+.quote-page .quote-field input:focus,.quote-page .quote-field select:focus,.quote-page .quote-field textarea:focus{border-color:#62814e;box-shadow:0 0 0 3px #62814e24}
+.quote-validation-failed .quote-field:has(:invalid) input,.quote-validation-failed .quote-field:has(:invalid) select,.quote-validation-failed .quote-field:has(:invalid) textarea{border-color:#c64e42}
+.quote-validation-failed .quote-choice-row:has(:invalid) .quote-radio-option{border-color:#c64e42}
+.quote-general-step{display:grid;gap:20px}
+.quote-panel{padding:24px;border:1px solid #dfe4dc;border-radius:6px;box-shadow:0 8px 18px #203f3108}
+.quote-panel h2{margin-bottom:26px}
+.quote-equipment-category{margin:0 0 2px;color:#68736c;font-size:14px}
+.quote-equipment-notice{margin:14px 0 22px;padding:15px 18px;border:1px solid #e8dfb5;border-radius:5px;background:#faf6e4;color:#816b38;font-size:13px;font-weight:600;line-height:1.55}
+.quote-equipment-value{margin:18px 0 24px!important}
+.quote-equipment-details{margin-top:22px}
+.quote-currency-input{display:flex;align-items:center;min-height:44px;padding-left:12px;border:1px solid #b8c2b5;border-radius:6px;background:#fff;color:#68736c}
+.quote-currency-input:focus-within{border-color:#62814e;box-shadow:0 0 0 3px #62814e24}
+.quote-page .quote-field .quote-currency-input input{min-height:42px;padding-left:8px;border:0;box-shadow:none}
+.quote-drone-card h3{display:flex;align-items:center;gap:8px;margin:0 0 22px;color:#315f48;font-family:Manrope,sans-serif;font-size:17px}
+.quote-drone-card h3 svg{transform:rotate(-35deg)}
+.quote-drone-actions{display:flex;justify-content:center;gap:12px}
+.quote-add-drone,.quote-remove-drone{display:flex;align-items:center;justify-content:center;gap:8px;width:fit-content;padding:13px 18px;border:0;border-radius:4px;color:white;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s,transform .2s}
+.quote-add-drone{background:#244b3b}
+.quote-add-drone:hover{background:#315f48;transform:translateY(-1px)}
+.quote-remove-drone{background:#68736c}
+.quote-remove-drone:hover{background:#4f5c53;transform:translateY(-1px)}
+.quote-panel-intro{margin:-12px 0 20px;color:#68736c;font-size:14px;line-height:1.6}
+.quote-declarations-intro{margin:0 0 14px;color:#34483a;font-size:14px;line-height:1.6}
+.quote-declarations-list{display:grid;gap:12px;margin:0 0 20px;padding-left:22px;color:#34483a;font-size:14px;line-height:1.6}
+.quote-declarations-choice{border-top:0;padding-top:4px}
+.quote-declarations-choice .quote-radio-option{min-width:120px;padding:0 12px}
+.quote-final-actions{margin-top:4px}
+.quote-choice-row{display:grid;grid-template-columns:minmax(230px,1fr) auto;align-items:center;gap:12px 24px;margin:0;padding:16px 0;border:0;border-top:1px solid #e8ebe5}
+.quote-choice-row legend{grid-column:1;float:left;width:100%;padding:0;color:#34483a;font-size:15px;line-height:1.45}
+.quote-choice-row>.quote-help{grid-column:2;grid-row:1}
+.quote-radio-options{display:flex;grid-column:2;gap:10px}
+.quote-page .quote-radio-option{position:relative;display:grid;place-items:center;min-width:100px;min-height:50px;margin:0;border:1px solid #b8c2b5;border-radius:7px;color:#244b3b;font-size:15px;cursor:pointer}
+.quote-radio-option input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.quote-radio-option:has(input:checked){border-color:#8ea96b;background:#e9efde;color:#244b3b}
+.quote-radio-option:has(input:focus-visible){outline:3px solid #62814e55;outline-offset:2px}
+.quote-textarea-field{align-items:start!important;margin:14px 0!important}
+.quote-page .quote-field textarea{min-height:130px;resize:vertical}
+.quote-warning{grid-column:1/-1;margin:0;color:#a33b2f;font-size:14px;line-height:1.6}
+.quote-step-actions{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.quote-page .form-submit{display:flex;width:fit-content;margin:30px 0 0;padding:14px 20px;border:0;cursor:pointer}
+.quote-step-actions .form-submit{margin:0}
+.quote-confirmed{display:flex;align-items:center;gap:8px;color:#315f48;font-size:14px;font-weight:600}
+.quote-next-step{min-height:310px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px}
+.quote-next-icon{width:50px;height:50px;display:grid;place-items:center;background:#e9efde;color:#527147;margin-bottom:18px}
+.quote-next-step h2{margin-bottom:10px}
+.quote-next-step p{max-width:460px;margin:0;color:#68736c;font-size:14px;line-height:1.7}
+.quote-previous-step{display:inline-flex;align-items:center;gap:8px;margin-top:24px;padding:10px 0;border:0;background:none;color:#3b5447;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:680px){.quote-page{min-height:calc(100vh - 228px);padding:32px 5% 48px}.quote-form-intro{margin-bottom:22px}.quote-form-intro h1{font-size:36px;margin:10px 0}.quote-form-intro p{font-size:13px}.quote-page .quote-form{padding:22px 18px}.quote-progress{grid-template-columns:repeat(3,1fr);margin:-22px -18px 22px}.quote-progress-step{min-height:48px;padding:8px 4px;font-size:10px}.quote-page .form-heading{font-size:9px}.quote-step h2{font-size:20px}.quote-page .quote-field{grid-template-columns:1fr;gap:7px}.quote-fields{gap:16px}.quote-panel{padding:18px 14px}.quote-choice-row{grid-template-columns:1fr auto;gap:12px}.quote-choice-row legend{grid-column:1/-1}.quote-choice-row>.quote-help{grid-column:2;grid-row:1}.quote-radio-options{grid-column:1/-1;width:100%}.quote-page .quote-radio-option{flex:1;min-width:0}.quote-step-actions{align-items:stretch;flex-direction:column-reverse}.quote-step-actions .form-submit{width:100%;justify-content:center}.quote-step-actions .quote-previous-step{justify-content:center}.quote-drone-actions{flex-direction:column}.quote-add-drone,.quote-remove-drone{width:100%}}
