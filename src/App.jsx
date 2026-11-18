@@ -500,7 +500,6 @@ function QuotePage() {
           <span className="quote-eyebrow">SOLICITUD DE PRESUPUESTO</span>
           <h1>Cuéntanos sobre <span>tu actividad.</span></h1>
           <p>Completa tus datos para que podamos preparar una propuesta adecuada.</p>
-          {import.meta.env.VITE_DEMO_MODE === 'true' && <p className="quote-demo-notice">Versión de demostración: las solicitudes no se envían ni se guardan en el servidor.</p>}
         </div>
         <form ref={formRef} noValidate className={`quote-form quote-multistep-form${validationError ? ' quote-validation-failed' : ''}`} onChange={() => { setValidationError(false); setSubmissionError('') }} onSubmit={async (event) => {
           event.preventDefault()
