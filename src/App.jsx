@@ -497,8 +497,7 @@ function QuotePage() {
     <main className="quote-page">
       <div className="quote-form-shell">
         <div className="quote-form-intro">
-          <span className="quote-eyebrow">SOLICITUD DE PRESUPUESTO</span>
-          <h1>Cuéntanos sobre <span>tu actividad.</span></h1>
+          <h1>Encuentra la cobertura <span>para tu dron.</span></h1>
           <p>Completa tus datos para que podamos preparar una propuesta adecuada.</p>
         </div>
         <form ref={formRef} noValidate className={`quote-form quote-multistep-form${validationError ? ' quote-validation-failed' : ''}`} onChange={() => { setValidationError(false); setSubmissionError('') }} onSubmit={async (event) => {
