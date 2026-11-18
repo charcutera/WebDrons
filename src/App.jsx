@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Network, Package, PackageCheck, Plane, Plus, Satellite, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleHelp, Compass, FileText, Layers, LifeBuoy, Menu, MessageCircle, Network, Package, PackageCheck, Phone, Plane, Plus, Satellite, Scale, Settings, ShieldCheck, Sparkles, X } from 'lucide-react'
 
 const products = [
   { number: '01', title: 'Responsabilidad civil', text: 'Opciones para proteger tu empresa ante reclamaciones por daños a terceros durante una operación.', tag: 'Cobertura para actividad profesional' },
@@ -277,9 +277,9 @@ function App() {
 
         <section className="about" id="nosotros"><div className="about-image"><img src="https://images.unsplash.com/photo-1527977966376-1c8408f9f108?auto=format&fit=crop&w=1300&q=85" alt="Dron profesional preparado para una operación aérea" /></div><div className="about-copy"><h2>Tu actividad,<br /><span>nuestro enfoque.</span></h2><p>Somos broker de Coverdrone y nos especializamos en seguros para empresas y profesionales que trabajan con drones.</p><p>Te ayudamos a revisar opciones de responsabilidad civil, protección de equipos y coberturas relacionadas con tu operación.</p><div className="about-stat"><strong>Broker de Coverdrone</strong><span>Seguros para operaciones profesionales</span></div></div></section>
 
-        <section className="faq-section section-wrap" id="faq"><div className="faq-heading"><h2>¿Tienes preguntas?<br /><span>Estamos cerca.</span></h2><p>Lo importante es que vueles con confianza. Aquí respondemos a lo que más nos preguntan.</p><span className="text-link inert-link" aria-disabled="true">¿Tienes otra duda? Escríbenos <ArrowRight size={15} /></span></div><div className="faq-list">{faqs.map((faq, index) => <div className={activeFaq === index ? 'faq-item faq-active' : 'faq-item'} key={faq.q}><button onClick={() => setActiveFaq(activeFaq === index ? -1 : index)} aria-expanded={activeFaq === index}><span className="faq-number">0{index + 1}</span><span>{faq.q}</span><ChevronDown size={18} /></button>{activeFaq === index && <p>{faq.a}</p>}</div>)}</div></section>
+        <section className="faq-section section-wrap" id="faq"><div className="faq-heading"><h2>¿Tienes preguntas?<br /><span>Estamos cerca.</span></h2><p>Lo importante es que vueles con confianza. Aquí respondemos a lo que más nos preguntan.</p><a className="text-link" href={appPath('presupuesto')}>¿Tienes otra duda? Escríbenos <ArrowRight size={15} /></a></div><div className="faq-list">{faqs.map((faq, index) => <div className={activeFaq === index ? 'faq-item faq-active' : 'faq-item'} key={faq.q}><button onClick={() => setActiveFaq(activeFaq === index ? -1 : index)} aria-expanded={activeFaq === index}><span className="faq-number">0{index + 1}</span><span>{faq.q}</span><ChevronDown size={18} /></button>{activeFaq === index && <p>{faq.a}</p>}</div>)}</div></section>
 
-        <section className="bottom-cta"><div><h2>¿Listo para despegar?</h2></div><span className="button-light inert-link" aria-disabled="true">Hablemos de tu dron <ArrowRight size={17} /></span></section>
+        <section className="bottom-cta"><div><h2>¿Listo para despegar?</h2></div><a className="button-light" href={appPath('presupuesto')}>Hablemos de tu dron <ArrowRight size={17} /></a></section>
       </main>}
 
       <footer className="footer">
@@ -363,7 +363,7 @@ function AboutPage() {
 
       <section className="about-contact-banner">
         <div><h2>Hablemos de tu próximo vuelo.</h2><p>Broker de seguros especialista en seguros de drones</p><p>Número de registro DGPFAT F215 · Dirección General de Seguros</p><p><a className="about-contact-phone" href="tel:+34900732322">900732322</a></p></div>
-        <span className="button-light inert-link" aria-disabled="true">Habla con nosotros <ArrowRight size={17} /></span>
+        <a className="button-light" href={appPath('presupuesto')}>Habla con nosotros <ArrowRight size={17} /></a>
       </section>
     </main>
   )
@@ -395,7 +395,7 @@ function FaqPage() {
         <div className="faq-page-list">{questions.map((item, index) => <article className={activeQuestion === index ? 'faq-page-item faq-page-item-active' : 'faq-page-item'} key={item.q}><button type="button" onClick={() => setActiveQuestion(activeQuestion === index ? -1 : index)} aria-expanded={activeQuestion === index}><span className="faq-page-number">0{index + 1}</span><span>{item.q}</span><ChevronDown size={19} /></button>{activeQuestion === index && <p>{item.a}</p>}</article>)}</div>
       </section>
 
-      <section className="faq-contact-cta"><div><h2>Estamos a un mensaje de distancia.</h2><p>Cuéntanos tu duda y te orientaremos sobre las opciones disponibles.</p></div><span className="button-light inert-link" aria-disabled="true">Contactar con SegurosDron <ArrowRight size={17} /></span></section>
+      <section className="faq-contact-cta"><div><h2>Estamos a un mensaje de distancia.</h2><p>Cuéntanos tu duda y te orientaremos sobre las opciones disponibles.</p></div><a className="button-light" href={appPath('presupuesto')}>Contactar con SegurosDron <ArrowRight size={17} /></a></section>
     </main>
   )
 }
@@ -500,6 +500,7 @@ function QuotePage() {
           <span className="quote-eyebrow">SOLICITUD DE PRESUPUESTO</span>
           <h1>Cuéntanos sobre <span>tu actividad.</span></h1>
           <p>Completa tus datos para que podamos preparar una propuesta adecuada.</p>
+          {import.meta.env.VITE_DEMO_MODE === 'true' && <p className="quote-demo-notice">Versión de demostración: las solicitudes no se envían ni se guardan en el servidor.</p>}
         </div>
         <form ref={formRef} noValidate className={`quote-form quote-multistep-form${validationError ? ' quote-validation-failed' : ''}`} onChange={() => { setValidationError(false); setSubmissionError('') }} onSubmit={async (event) => {
           event.preventDefault()
@@ -538,6 +539,8 @@ function QuotePage() {
           } else if (formData.declarationsAgreement !== 'Sí') {
             setConfirmed(false)
             setValidationError(true)
+          } else if (import.meta.env.VITE_DEMO_MODE === 'true') {
+            setConfirmed(true)
           } else {
             setIsSubmitting(true)
             setSubmissionError('')
@@ -576,7 +579,7 @@ function QuotePage() {
               </span>
             ))}
           </nav>
-          <p className="quote-required-note"><span className="quote-required" aria-hidden="true">*</span> Campo obligatorio · Tus datos se guardan automáticamente en este navegador</p>
+          <p className="quote-required-note"><span className="quote-required" aria-hidden="true">*</span> Campo obligatorio</p>
           {validationError && <p className="quote-validation-message" role="alert">{step === 7 && formData.declarationsAgreement === 'No' ? 'Para solicitar el presupuesto, debes aceptar las declaraciones.' : 'Por favor, completa los campos obligatorios que faltan y revisa los datos marcados.'}</p>}
           <div className="form-heading"><span>{step === 1 ? 'DATOS DEL CLIENTE' : step === 2 ? 'DATOS GENERALES Y CONFIRMACIÓN' : step === 3 ? 'DATOS GENERALES DEL TITULAR' : step === 4 ? 'DETALLES DEL DRON' : step === 5 ? 'EQUIPAMIENTO' : step === 6 ? 'RESPONSABILIDAD' : 'PRESUPUESTO'}</span><span>PASO 0{progressStep} — 06</span></div>
           {step === 1 ? (
@@ -978,14 +981,19 @@ function QuotePage() {
               </div>
               <div className="quote-step-actions quote-final-actions">
                 <button className="quote-previous-step" type="button" onClick={() => { setStep(6); setConfirmed(false) }}><ArrowLeft size={16} /> Modificar</button>
-                <button className="button-primary form-submit" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Enviando…' : 'Cotizar'} <ArrowRight size={17} /></button>
+                <button className="button-primary form-submit" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Enviando…' : import.meta.env.VITE_DEMO_MODE === 'true' ? 'Finalizar demostración' : 'Cotizar'} <ArrowRight size={17} /></button>
               </div>
               {submissionError && <p className="quote-submit-error" role="alert">{submissionError}</p>}
-              {confirmed && <p className="quote-confirmed" role="status"><Check size={17} /> Solicitud enviada correctamente. Nos pondremos en contacto contigo.</p>}
+              {confirmed && <p className="quote-confirmed" role="status"><Check size={17} />{import.meta.env.VITE_DEMO_MODE === 'true' ? 'Demostración completada. No se ha enviado ninguna solicitud.' : ' Solicitud enviada correctamente. Nos pondremos en contacto contigo.'}</p>}
             </section>
           ) : null}
         </form>
       </div>
+      <a className="quote-phone-bar" href="tel:+34900732322">
+        <span className="quote-phone-icon"><Phone size={22} aria-hidden="true" /></span>
+        <span className="quote-phone-copy">¿Tienes dudas? Llámanos</span>
+        <strong>900 732 322</strong>
+      </a>
     </main>
   )
 }

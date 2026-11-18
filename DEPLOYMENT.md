@@ -1,6 +1,18 @@
-# Deploy and configure quote submissions
+# Deploy the demo site and configure quote submissions
 
-The quote form uses a Vercel serverless function to store submissions in Supabase and send an email notification with Resend. The Supabase service-role key and Resend API key must only be configured as server-side environment variables in Vercel.
+## Publish a client demo on GitHub Pages
+
+The `Deploy GitHub Pages` workflow builds the site and publishes it when changes are pushed to `main`.
+
+1. Push the repository to GitHub.
+2. In the repository settings, open **Pages** and set the build and deployment source to **GitHub Actions**.
+3. Wait for the `Deploy GitHub Pages` workflow to finish, then open the Pages URL shown in the workflow.
+
+The Pages build includes a `404.html` fallback so routes such as `/WebDrons/presupuesto` and `/WebDrons/productos` still open when loaded directly or refreshed. In this static demo, completing the final form step only shows a demo confirmation; it does not send or store a real submission.
+
+## Send and store real quote submissions
+
+For real submissions, deploy the project to Vercel. Its serverless function stores submitted data in Supabase and sends an email notification with Resend. The Supabase service-role key and Resend API key must only be configured as server-side environment variables in Vercel.
 
 ## Configure Supabase
 
@@ -28,6 +40,6 @@ The table has row-level security enabled and grants no access to anonymous or au
 3. Deploy. `vercel.json` builds the Vite site at the domain root and rewrites the app's client-side routes to `index.html`.
 4. Submit a test quote and verify that it appears in the Supabase table and arrives at the recipient email.
 
-Do not commit real credentials or paste them into source files or chat. The existing GitHub Pages site remains unchanged until its domain or publishing configuration is deliberately switched to Vercel.
+Do not commit real credentials or paste them into source files or chat. GitHub Pages remains a static demo and cannot run the email/database API.
 
 Because quote submissions contain personal data, publish an appropriate privacy notice and define a retention/deletion period before collecting real customer submissions.
