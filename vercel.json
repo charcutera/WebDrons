@@ -1,4 +1,5 @@
 {
+  "installCommand": "npm ci --include=optional",
   "buildCommand": "VITE_BASE_PATH=/ npm run build",
   "outputDirectory": "dist",
   "rewrites": [

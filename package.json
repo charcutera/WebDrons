@@ -1,11 +1,11 @@
 {
-  "name": "aeroguard-drone-insurance",
+  "name": "segurosdron",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite",
+    "build": "vite build",
     "build:github": "VITE_BASE_PATH=/WebDrons/ VITE_OUT_DIR=docs VITE_DEMO_MODE=true vite build && cp docs/index.html docs/404.html",
     "preview": "vite preview"
   },
