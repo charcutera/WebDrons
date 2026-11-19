@@ -1065,7 +1065,6 @@ function QuotePage() {
                 </fieldset>
                 {formData.ownedGroundEquipment === 'Sí' && (
                   <>
-                    <p className="quote-equipment-notice" role="note">Solo podemos ofrecer cobertura de equipos terrestres para tus drones que no sean prototipo.</p>
                     <label className="quote-field quote-equipment-value">
                       <span className="quote-field-label">¿Cuál es el valor total de todo el equipamiento terrestre?<span className="quote-required" aria-hidden="true">*</span></span>
                       <span className="quote-currency-input"><span aria-hidden="true">€</span><input name="ownedGroundValue" type="number" min="0" step="0.01" value={formData.ownedGroundValue || ''} onChange={updateFormData} required /></span>
