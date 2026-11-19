@@ -24,7 +24,7 @@ const productGroups = [
 ]
 
 const quoteClientFields = [
-  { name: 'title', label: 'Tratamiento', type: 'select', required: true, options: ['Sr.', 'Sra.', 'Mx.'] },
+  { name: 'title', label: 'Título', type: 'select', required: true, options: ['Sr.', 'Sra.'] },
   { name: 'firstName', label: 'Nombre', required: true },
   { name: 'surname', label: 'Apellidos', required: true },
   { name: 'dateOfBirth', label: 'Fecha de nacimiento', type: 'date', required: true, help: 'Indica la fecha de nacimiento del contacto principal.' },
@@ -36,10 +36,22 @@ const quoteClientFields = [
   { name: 'county', label: 'Provincia / región' },
   { name: 'country', label: 'País', type: 'select', required: true, options: ['España', 'Portugal', 'Francia', 'Reino Unido', 'Otro'] },
   { name: 'purpose', label: '¿Con qué finalidad operas?', type: 'select', required: true, options: ['Commercial', 'Recreational', 'Free Flight Examination Cover'], help: 'Selecciona la actividad para la que solicitas cobertura.' },
-  { name: 'email', label: 'Correo electrónico de contacto', type: 'email' },
+  { name: 'email', label: 'Correo electrónico de contacto', type: 'email', required: true },
   { name: 'workPhone', label: 'Teléfono del trabajo (fijo)', type: 'tel' },
   { name: 'mobilePhone', label: 'Teléfono móvil', type: 'tel' },
 ]
+
+function isUnderage(dateOfBirth) {
+  if (typeof dateOfBirth !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) return false
+
+  const [year, month, day] = dateOfBirth.split('-').map(Number)
+  const birthDate = new Date(year, month - 1, day)
+  if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day) return false
+
+  const today = new Date()
+  const age = today.getFullYear() - year - (today.getMonth() + 1 < month || (today.getMonth() + 1 === month && today.getDate() < day) ? 1 : 0)
+  return age < 18 && birthDate <= new Date(today.getFullYear(), today.getMonth(), today.getDate())
+}
 
 const coverageComparison = [
   {
@@ -125,16 +137,20 @@ const heroSlides = [
     alt: 'Espectáculo nocturno de drones luminosos sobre edificios',
   },
   {
-    src: 'https://images.unsplash.com/photo-1505717927613-21e196737419?auto=format&fit=crop&fm=jpg&q=85&w=1800',
-    alt: 'Dron gris claramente visible entre los árboles de un bosque',
-  },
-  {
     src: 'https://images.unsplash.com/photo-1547044283-81919b74c110?auto=format&fit=crop&fm=jpg&q=85&w=1800',
     alt: 'Profesional pilotando un dron y controlando su cámara',
   },
   {
     src: `${import.meta.env.BASE_URL}images/dron-incendios.jpg`,
     alt: 'Dron apoyando a los equipos de emergencia durante un incendio forestal',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/energia-eolica-dron.png`,
+    alt: 'Inspección de un aerogenerador con un dron',
+  },
+  {
+    src: `${import.meta.env.BASE_URL}images/inspeccion-solar-dron.png`,
+    alt: 'Profesional con dron inspeccionando paneles solares',
   },
 ]
 
@@ -411,7 +427,8 @@ function readQuoteDraft() {
     if (!draft || typeof draft !== 'object' || Array.isArray(draft)) return null
 
     const step = Number.isInteger(draft.step) && draft.step >= 1 && draft.step <= 7 ? draft.step : 1
-    const formData = draft.formData && typeof draft.formData === 'object' && !Array.isArray(draft.formData) ? draft.formData : {}
+    const formData = draft.formData && typeof draft.formData === 'object' && !Array.isArray(draft.formData) ? { ...draft.formData } : {}
+    delete formData.nonPrototypeDrones
     const drones = Array.isArray(draft.drones)
       ? draft.drones.filter((drone) => drone && Number.isInteger(drone.id) && drone.id > 0)
       : []
@@ -479,9 +496,10 @@ function QuotePage() {
                 {options.map((option) => <option key={option} value={option}>{option}</option>)}
               </select>
             ) : (
-              <input name={name} type={type} value={formData[name] || ''} onChange={updateFormData} required={required} />
+              <input name={name} type={type} value={formData[name] || ''} onChange={updateFormData} required={required} max={name === 'dateOfBirth' ? localToday : undefined} />
             )}
           </label>
+          {name === 'dateOfBirth' && isUnderage(formData.dateOfBirth) && <p className="quote-age-warning" role="alert">No atendemos a personas menores de 18 años.</p>}
           {name === 'purpose' && formData.purpose === 'Commercial' && (
             <label className="quote-field">
               <span className="quote-field-label">Nombre de la empresa (si operas como empresa) o nombre completo (si solicitas como particular)<span className="quote-required" aria-hidden="true">*</span></span>
@@ -503,6 +521,12 @@ function QuotePage() {
         <form ref={formRef} noValidate className={`quote-form quote-multistep-form${validationError ? ' quote-validation-failed' : ''}`} onChange={() => { setValidationError(false); setSubmissionError('') }} onSubmit={async (event) => {
           event.preventDefault()
           if (isSubmitting) return
+          if (isUnderage(formData.dateOfBirth)) {
+            setStep(1)
+            setConfirmed(false)
+            setValidationError(false)
+            return
+          }
           const invalidField = Array.from(formRef.current.elements).find((field) => field.willValidate && !field.validity.valid)
           if (invalidField) {
             setValidationError(true)
@@ -727,6 +751,12 @@ function QuotePage() {
                       <option value="" disabled>Selecciona una opción</option>
                       <option value="0-0.249">0 - 0,249 kilogramos</option>
                       <option value="0.250-40">0,250 - 40 kilogramos</option>
+                      <option value="41-100">41 - 100 kilogramos</option>
+                      <option value="101-125">101 - 125 kilogramos</option>
+                      <option value="126-200">126 - 200 kilogramos</option>
+                      <option value="201-300">201 - 300 kilogramos</option>
+                      <option value="301-500">301 - 500 kilogramos</option>
+                      <option value="500+">+500 kilogramos</option>
                     </select>
                   </label>
                   <fieldset className="quote-choice-row">
@@ -741,20 +771,6 @@ function QuotePage() {
                       ))}
                     </div>
                   </fieldset>
-                  {formData.prototypeDrones && (
-                    <fieldset className="quote-choice-row">
-                      <legend><span className="quote-required" aria-hidden="true">*</span> ¿Operas drones que no sean prototipos?</legend>
-                      <span className="quote-help" title="Son drones fabricados como un producto terminado." aria-label="Son drones fabricados como un producto terminado." tabIndex={0}>i</span>
-                      <div className="quote-radio-options">
-                        {['Sí', 'No'].map((option) => (
-                          <label className="quote-radio-option" key={option}>
-                            <input type="radio" name="nonPrototypeDrones" value={option} checked={formData.nonPrototypeDrones === option} onChange={updateFormData} required />
-                            <span>{option}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </fieldset>
-                  )}
                 </div>
               </div>
               {drones.map((drone, index) => (

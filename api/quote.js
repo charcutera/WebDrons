@@ -3,6 +3,7 @@ const requiredFields = [
   'firstName',
   'surname',
   'dateOfBirth',
+  'email',
   'postcode',
   'address1',
   'city',
@@ -21,7 +22,6 @@ const requiredFields = [
   'droneCount',
   'droneMtow',
   'prototypeDrones',
-  'nonPrototypeDrones',
   'ownedAirborneEquipment',
   'ownedGroundEquipment',
   'hiredEquipment',
@@ -31,7 +31,7 @@ const requiredFields = [
 ]
 
 const fieldLabels = {
-  title: 'Tratamiento',
+  title: 'Título',
   firstName: 'Nombre',
   surname: 'Apellidos',
   dateOfBirth: 'Fecha de nacimiento',
@@ -65,7 +65,6 @@ const fieldLabels = {
   droneCount: 'Número total de drones',
   droneMtow: 'MTOW del dron más pesado',
   prototypeDrones: 'Opera drones prototipo',
-  nonPrototypeDrones: 'Opera drones no prototipo',
   ownedAirborneEquipment: 'Cobertura para equipo aéreo propio',
   ownedAirborneValue: 'Valor del equipo aéreo propio',
   ownedGroundEquipment: 'Cobertura para equipo terrestre propio',
@@ -86,6 +85,18 @@ function isObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
+function isUnderage(dateOfBirth) {
+  if (typeof dateOfBirth !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dateOfBirth)) return false
+
+  const [year, month, day] = dateOfBirth.split('-').map(Number)
+  const birthDate = new Date(year, month - 1, day)
+  if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day) return false
+
+  const today = new Date()
+  const age = today.getFullYear() - year - (today.getMonth() + 1 < month || (today.getMonth() + 1 === month && today.getDate() < day) ? 1 : 0)
+  return age < 18 && birthDate <= new Date(today.getFullYear(), today.getMonth(), today.getDate())
+}
+
 function validateSubmission(body) {
   if (!isObject(body) || !isObject(body.formData) || !Array.isArray(body.drones)) {
     return 'El formato de la solicitud no es válido.'
@@ -102,6 +113,10 @@ function validateSubmission(body) {
   const { formData, drones } = body
   if (requiredFields.some((field) => typeof formData[field] !== 'string' || !formData[field].trim())) {
     return 'Completa todos los campos obligatorios antes de enviar.'
+  }
+
+  if (isUnderage(formData.dateOfBirth)) {
+    return 'No atendemos solicitudes de personas menores de 18 años.'
   }
 
   if (formData.declarationsAgreement !== 'Sí') {
