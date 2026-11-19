@@ -160,17 +160,17 @@ const legalDocuments = {
   '/politica-de-cookies': {
     title: 'Política de cookies',
     file: 'legal/politica-de-cookies.txt',
-    description: 'Consulta la política de cookies de SegurosDron.',
+    format: 'cookies',
   },
   '/proteccion-de-datos': {
     title: 'Protección de datos',
     file: 'legal/proteccion-de-datos.txt',
-    description: 'Consulta la información sobre protección de datos personales.',
+    format: 'privacy',
   },
   '/aviso-legal': {
     title: 'Aviso legal',
     file: 'legal/aviso-legal.txt',
-    description: 'Consulta el aviso legal de SegurosDron.',
+    format: 'notice',
   },
 }
 
@@ -359,6 +359,7 @@ function LegalDocumentPage({ document }) {
       cancelled = true
     }
   }, [document.file, document.title])
+  const contentBlocks = text ? formatLegalText(text, document.format) : []
 
   return (
     <main className="legal-document-page">
@@ -367,15 +368,150 @@ function LegalDocumentPage({ document }) {
           <div>
             <p className="legal-document-eyebrow">INFORMACIÓN LEGAL</p>
             <h1>{document.title}</h1>
-            <p>{document.description}</p>
           </div>
         </header>
         <article className="legal-document-text" aria-label={document.title} aria-busy={loading}>
-          {loading ? <p role="status">Cargando documento…</p> : loadError ? <p role="alert">{loadError}</p> : <pre>{text}</pre>}
+          {loading ? <p role="status">Cargando documento…</p> : loadError ? <p role="alert">{loadError}</p> : contentBlocks.map((block, index) => {
+            if (block.type === 'heading') return <h2 key={index}>{block.text}</h2>
+            if (block.type === 'subheading') return <h3 key={index}>{block.text}</h3>
+            if (block.type === 'list') return <ul key={index}>{block.items.map((item) => <li key={item}>{item}</li>)}</ul>
+            return <p key={index}>{block.text}</p>
+          })}
         </article>
       </div>
     </main>
   )
+}
+
+function formatLegalText(text, format) {
+  if (format === 'privacy') {
+    const normalizedText = text.replace(/\s+/g, ' ').trim()
+    const complaintHeading = 'Quejas y reclamaciones'
+    const complaintIndex = normalizedText.indexOf(complaintHeading)
+    if (complaintIndex >= 0) {
+      const privacyText = normalizedText.slice(0, complaintIndex)
+      const complaintText = normalizedText.slice(complaintIndex + complaintHeading.length)
+      const splitBefore = (content, phrases) => {
+        const paragraphs = []
+        let start = 0
+        phrases.forEach((phrase) => {
+          const index = content.indexOf(phrase, start)
+          if (index >= start) {
+            paragraphs.push(content.slice(start, index).trim())
+            start = index
+          }
+        })
+        if (start < content.length) paragraphs.push(content.slice(start).trim())
+        return paragraphs.filter(Boolean)
+      }
+
+      return [
+        ...splitBefore(privacyText, [
+          'Trataremos sus datos de carácter personal de conformidad',
+          'Puede consultar la información adicional y detallada',
+          'Puede oponerse a este tratamiento de sus datos',
+          'No transferiremos sus datos personales',
+          'Podríamos trasferir sus datos personales',
+        ]).map((paragraph) => ({ type: 'paragraph', text: paragraph })),
+        { type: 'heading', text: complaintHeading },
+        ...splitBefore(complaintText, [
+          'Si dicha resolución no fuera del agrado del Cliente',
+          'La resolución de dichas quejas y reclamaciones se resolverá',
+          'El mediador / bróker está inscrita',
+        ]).map((paragraph) => ({ type: 'paragraph', text: paragraph })),
+      ]
+    }
+  }
+
+  const lines = text.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && line !== 'Política de Cookies')
+  const blocks = []
+  let paragraph = []
+  let list = []
+
+  const flushParagraph = () => {
+    if (paragraph.length) blocks.push({ type: 'paragraph', text: paragraph.join(' ') })
+    paragraph = []
+  }
+  const flushList = () => {
+    if (list.length) blocks.push({ type: 'list', items: list })
+    list = []
+  }
+  const flushText = () => {
+    flushParagraph()
+    flushList()
+  }
+  const headingAt = (index) => {
+    const line = lines[index]
+    if (/^\d+\.\s/.test(line)) {
+      let text = line
+      let end = index
+      while (!/[.:]$/.test(text) && end + 1 < lines.length && !/^[•–-]/.test(lines[end + 1])) {
+        text += ` ${lines[++end]}`
+      }
+      return { type: 'heading', text, end }
+    }
+
+    if (format === 'cookies' && line.startsWith('Dónde y Para Que se')) {
+      let text = line
+      let end = index
+      while (!/Cookies\.$/.test(text) && end + 1 < lines.length) text += ` ${lines[++end]}`
+      return { type: 'heading', text, end }
+    }
+
+    if (format === 'cookies' && line.startsWith('Según ')) {
+      let text = line
+      let end = index
+      while (!/:$/.test(text) && end + 1 < lines.length) text += ` ${lines[++end]}`
+      return { type: 'subheading', text, end }
+    }
+
+    if (format === 'notice') {
+      const noticeHeadings = [
+        'Identidad del titular de la presente web',
+        'Derechos y obligaciones del prestador de los servicios',
+        'Derechos y obligaciones del usuario.',
+        'Propiedad intelectual',
+        'Protección de datos de carácter personal',
+        'Vínculos o enlaces hipertextuales',
+        'Nulidad e ineficacia de las cláusulas',
+        'Ley aplicable y jurisdicción',
+      ]
+      const heading = noticeHeadings.find((item) => line === item)
+      if (heading) return { type: 'heading', text: heading, end: index }
+
+      if (line.startsWith('Exclusión de garantías')) {
+        let text = line
+        let end = index
+        while (!text.endsWith('servicios') && end + 1 < lines.length) text += ` ${lines[++end]}`
+        return { type: 'heading', text, end }
+      }
+    }
+
+    return null
+  }
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index]
+    const heading = headingAt(index)
+    if (heading) {
+      flushText()
+      blocks.push({ type: heading.type, text: heading.text })
+      index = heading.end
+      continue
+    }
+
+    if (/^[•–-]\s*/.test(line)) {
+      flushParagraph()
+      list.push(line.replace(/^[•–-]\s*/, ''))
+      continue
+    }
+
+    if (list.length) list[list.length - 1] += ` ${line}`
+    else paragraph.push(line)
+  }
+
+  flushText()
+  return blocks
 }
 
 function ProductsPage() {
