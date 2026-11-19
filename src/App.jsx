@@ -320,7 +320,7 @@ function App() {
       <footer className="footer">
         <div className="footer-brand-group"><a className="brand footer-brand" href={appPath()}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
         <div className="footer-contact"><strong>Broker de seguros especialista en seguros de drones</strong><div className="footer-contact-details"><span>Número de registro DGPFAT F215</span><span>Dirección General de Seguros</span><a href="tel:+34900732322">900732322</a></div></div>
-        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><a href={appPath('presupuesto')}>Cotizar precio</a><strong className="footer-links-heading">Información legal</strong><a href={appPath('politica-de-cookies')}>Política de cookies</a><a href={appPath('proteccion-de-datos')}>Protección de datos</a><a href={appPath('aviso-legal')}>Aviso legal</a></nav>
+        <nav className="footer-links" aria-label="Información legal"><strong className="footer-links-heading">Información legal</strong><a href={appPath('politica-de-cookies')}>Política de cookies</a><a href={appPath('proteccion-de-datos')}>Protección de datos</a><a href={appPath('aviso-legal')}>Aviso legal</a></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
     </>
