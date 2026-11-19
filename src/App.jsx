@@ -1043,7 +1043,6 @@ function QuotePage() {
                 </fieldset>
                 {formData.ownedAirborneEquipment === 'Sí' && (
                   <>
-                    <p className="quote-equipment-notice" role="note">Solo podemos ofrecer cobertura de equipos aéreos para tus drones que no sean prototipo.</p>
                     <label className="quote-field quote-equipment-value">
                       <span className="quote-field-label">Valor total de los equipos aéreos, incluidos drones, cámaras y gimbals, etc.<span className="quote-required" aria-hidden="true">*</span></span>
                       <span className="quote-currency-input"><span aria-hidden="true">€</span><input name="ownedAirborneValue" type="number" min="0" step="0.01" value={formData.ownedAirborneValue || ''} onChange={updateFormData} required /></span>
@@ -1088,7 +1087,6 @@ function QuotePage() {
                 </fieldset>
                 {formData.hiredEquipment === 'Sí' && (
                   <>
-                    <p className="quote-equipment-notice" role="note">Solo podemos ofrecer cobertura de equipos alquilados para tus drones que no sean prototipo.</p>
                     <div className="quote-fields quote-equipment-details">
                       <label className="quote-field">
                         <span className="quote-field-label">Nombre del arrendador<span className="quote-required" aria-hidden="true">*</span></span>
