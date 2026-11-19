@@ -156,6 +156,24 @@ const heroSlides = [
 
 const appPath = (path = '') => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
 
+const legalDocuments = {
+  '/politica-de-cookies': {
+    title: 'Política de cookies',
+    file: 'legal/politica-de-cookies.txt',
+    description: 'Consulta la política de cookies de SegurosDron.',
+  },
+  '/proteccion-de-datos': {
+    title: 'Protección de datos',
+    file: 'legal/proteccion-de-datos.txt',
+    description: 'Consulta la información sobre protección de datos personales.',
+  },
+  '/aviso-legal': {
+    title: 'Aviso legal',
+    file: 'legal/aviso-legal.txt',
+    description: 'Consulta el aviso legal de SegurosDron.',
+  },
+}
+
 const faqCategories = [
   { id: 'recreativo', title: 'Póliza recreativa', text: 'Cobertura, equipo y cambios para vuelos de ocio.', icon: Sparkles },
   { id: 'profesional', title: 'Póliza profesional', text: 'Responsabilidad, actividad y flotas de drones.', icon: Compass },
@@ -211,6 +229,7 @@ function App() {
   const isProductsPage = routePath === '/productos'
   const isFaqPage = routePath === '/faq'
   const isAboutPage = routePath === '/sobre-nosotros'
+  const legalDocument = legalDocuments[routePath]
   const activeNav = isProductsPage ? 'products' : isAboutPage ? 'about' : isFaqPage ? 'faq' : currentHash === '#nosotros' ? 'about' : currentHash === '#faq' ? 'faq' : isHomePage ? 'home' : ''
   const closeMenu = () => setMenuOpen(false)
 
@@ -260,7 +279,7 @@ function App() {
         <a className="header-cta" href={appPath('presupuesto')}>Cotizar precio <ArrowUpRight size={16} /></a>
       </header>
 
-      {isQuotePage ? <QuotePage /> : isProductsPage ? <ProductsPage /> : isAboutPage ? <AboutPage /> : isFaqPage ? <FaqPage /> : <main>
+      {legalDocument ? <LegalDocumentPage document={legalDocument} /> : isQuotePage ? <QuotePage /> : isProductsPage ? <ProductsPage /> : isAboutPage ? <AboutPage /> : isFaqPage ? <FaqPage /> : <main>
         <section className="hero" id="inicio">
           <div className="hero-copy">
             <h1>El seguro que tu<br /><span>dron necesita.</span></h1>
@@ -301,10 +320,61 @@ function App() {
       <footer className="footer">
         <div className="footer-brand-group"><a className="brand footer-brand" href={appPath()}><span>Seguros<span className="brand-light">Dron</span></span></a><p>Broker de Coverdrone y especialistas en seguros para drones.</p></div>
         <div className="footer-contact"><strong>Broker de seguros especialista en seguros de drones</strong><div className="footer-contact-details"><span>Número de registro DGPFAT F215</span><span>Dirección General de Seguros</span><a href="tel:+34900732322">900732322</a></div></div>
-        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><a href={appPath('presupuesto')}>Cotizar precio</a></nav>
+        <nav className="footer-links" aria-label="Enlaces del pie de página"><a href={appPath('productos')}>Nuestros productos</a><a href={appPath('sobre-nosotros')}>Sobre nosotros</a><a href={appPath('faq')}>FAQ</a><a href={appPath('presupuesto')}>Cotizar precio</a><strong className="footer-links-heading">Información legal</strong><a href={appPath('politica-de-cookies')}>Política de cookies</a><a href={appPath('proteccion-de-datos')}>Protección de datos</a><a href={appPath('aviso-legal')}>Aviso legal</a></nav>
         <span className="copyright">© 2026 SegurosDron. Todos los derechos reservados.</span>
       </footer>
     </>
+  )
+}
+
+function LegalDocumentPage({ document }) {
+  const [text, setText] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState('')
+
+  useEffect(() => {
+    let cancelled = false
+    setText('')
+    setLoadError('')
+    setLoading(true)
+
+    fetch(appPath(document.file))
+      .then((response) => {
+        if (!response.ok) throw new Error(`No se pudo cargar el documento (${response.status}).`)
+        return response.text()
+      })
+      .then((content) => {
+        if (!cancelled) setText(content)
+      })
+      .catch((error) => {
+        if (cancelled) return
+        console.error(`No se pudo cargar ${document.title}.`, error)
+        setLoadError('No se pudo cargar el documento. Inténtalo de nuevo más tarde.')
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [document.file, document.title])
+
+  return (
+    <main className="legal-document-page">
+      <div className="legal-document-shell">
+        <header className="legal-document-header">
+          <div>
+            <p className="legal-document-eyebrow">INFORMACIÓN LEGAL</p>
+            <h1>{document.title}</h1>
+            <p>{document.description}</p>
+          </div>
+        </header>
+        <article className="legal-document-text" aria-label={document.title} aria-busy={loading}>
+          {loading ? <p role="status">Cargando documento…</p> : loadError ? <p role="alert">{loadError}</p> : <pre>{text}</pre>}
+        </article>
+      </div>
+    </main>
   )
 }
 

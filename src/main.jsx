@@ -7,6 +7,7 @@ import './products-page.css'
 import './about-page.css'
 import './readability.css'
 import './faq-page.css'
+import './legal-page.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
