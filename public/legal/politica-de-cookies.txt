@@ -121,11 +121,3 @@ se llama «Limitar el seguimiento de anuncios» y en Android,
 Usted tiene la posibilidad de configurar su navegador para ser
 avisado por pantalla cada vez que reciba una cookie, de manera
 que se impida su instalación en su equipo.
-Si quiere ampliar esta información, por favor consulte las
-instrucciones y manuales de su navegador, en los siguientes
-enlaces:
-– Para Google Chrome, aquí.
-– Para Microsoft Internet Explorer aquí.
-– Para Microsoft Edge aquí.
-– Para Mozilla Firefox aquí.
-– Para Safari aquí.
