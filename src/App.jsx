@@ -1171,7 +1171,20 @@ function QuotePage() {
                   <span className="quote-field-label">¿Durante cuánto tiempo necesitas cobertura?<span className="quote-required" aria-hidden="true">*</span></span>
                   <select name="coverDuration" value={formData.coverDuration || ''} onChange={updateFormData} required>
                     <option value="" disabled>Selecciona una opción</option>
-                    <option value="1-year">Un año</option>
+                    {[
+                      { value: '1-day', label: '1 día' },
+                      { value: '2-days', label: '2 días' },
+                      { value: '3-days', label: '3 días' },
+                      { value: '4-days', label: '4 días' },
+                      { value: '5-days', label: '5 días' },
+                      { value: '6-days', label: '6 días' },
+                      { value: '1-week', label: '1 semana' },
+                      { value: '1-month', label: '1 mes' },
+                      { value: '2-months', label: '2 meses' },
+                      { value: '3-months', label: '3 meses' },
+                      { value: '6-months', label: '6 meses' },
+                      { value: '1-year', label: '1 año' },
+                    ].map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
                   </select>
                 </label>
               </div>
