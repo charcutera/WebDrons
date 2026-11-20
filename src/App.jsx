@@ -283,7 +283,7 @@ function App() {
         <section className="hero" id="inicio">
           <div className="hero-copy">
             <h1>El seguro que tu<br /><span>dron necesita.</span></h1>
-            <p className="hero-subtitle">Seguro especializado para drones de uso profesional y recreativo. Protege tus vuelos, tus equipos y tu actividad con soluciones del broker de Coverdrone en España.</p>
+            <p className="hero-subtitle">Seguro especializado para drones de uso <strong>profesional o recreativo</strong>. Protege tus vuelos, tus equipos y tu actividad con soluciones del broker de Coverdrone en España.</p>
             <div className="hero-actions"><a className="button-primary" href={appPath('presupuesto')}>Cotizar precio <ArrowRight size={17} /></a></div>
             <div className="about-partner hero-partner"><span>Broker de</span><img src={appPath('images/cropped-coverdrone_logo.png')} alt="Coverdrone" /></div>
           </div>
