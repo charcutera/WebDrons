@@ -36,7 +36,7 @@ The table has row-level security enabled and grants no access to anonymous or au
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `RESEND_API_KEY`
    - `QUOTE_FROM_EMAIL`
-   - `QUOTE_RECIPIENT_EMAIL` (`ingridlaragob@gmail.com`)
+   - `QUOTE_RECIPIENT_EMAIL` (`info@segurosdron.es`)
 3. Deploy. `vercel.json` builds the Vite site at the domain root and rewrites the app's client-side routes to `index.html`.
 4. Submit a test quote and verify that it appears in the Supabase table and arrives at the recipient email.
 

@@ -656,7 +656,7 @@ function QuotePage() {
   const [confirmed, setConfirmed] = useState(false)
   const [validationError, setValidationError] = useState(false)
   const [drones, setDrones] = useState(initialDraft?.drones ?? [{ id: 1 }])
-  const [submissionId] = useState(initialDraft?.submissionId ?? crypto.randomUUID())
+  const [submissionId, setSubmissionId] = useState(initialDraft?.submissionId ?? crypto.randomUUID())
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submissionError, setSubmissionError] = useState('')
   const formRef = useRef(null)
@@ -792,6 +792,7 @@ function QuotePage() {
               const result = await response.json()
               if (!response.ok) throw new Error(result.error || 'No se ha podido enviar la solicitud. Inténtalo de nuevo.')
               setConfirmed(true)
+              setSubmissionId(crypto.randomUUID())
             } catch (error) {
               setConfirmed(false)
               setSubmissionError(error instanceof Error ? error.message : 'No se ha podido enviar la solicitud. Inténtalo de nuevo.')

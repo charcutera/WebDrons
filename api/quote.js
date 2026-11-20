@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto'
+
 const requiredFields = [
   'title',
   'firstName',
@@ -208,7 +210,7 @@ export default async function handler(req, res) {
   if (validationError) return res.status(400).json({ error: validationError })
 
   const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY, QUOTE_FROM_EMAIL } = process.env
-  const recipient = process.env.QUOTE_RECIPIENT_EMAIL || 'ingridlaragob@gmail.com'
+  const recipient = process.env.QUOTE_RECIPIENT_EMAIL || 'info@segurosdron.es'
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !RESEND_API_KEY || !QUOTE_FROM_EMAIL) {
     console.error('Falta configurar una o más variables de entorno para enviar presupuestos.')
     return res.status(503).json({ error: 'El envío aún no está configurado. Inténtalo más tarde.' })
@@ -244,12 +246,13 @@ export default async function handler(req, res) {
     }
     if (body.formData.email) email.reply_to = body.formData.email
 
+    const idempotencyKey = `${body.submissionId}-${createHash('sha256').update(JSON.stringify(email)).digest('hex')}`
     const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json',
-        'Idempotency-Key': body.submissionId,
+        'Idempotency-Key': idempotencyKey,
       },
       body: JSON.stringify(email),
     })
